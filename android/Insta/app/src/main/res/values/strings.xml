@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Insta</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_login2">LoginActivity2</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Item Detail</string>
+    <string name="title_activity_main2">MainActivity</string>
+
+    <string name="title_home">@string/app_name</string>
+    <string name="title_search">Search</string>
+    <string name="title_camera">Camera</string>
+    <string name="title_my_activity">Activity</string>
+    <string name="title_profile">Profile</string>
+    <string name="menu_title_messages">Messages</string>
+</resources>
