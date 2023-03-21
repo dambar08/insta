@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dambarbahadurpun.insta">
+    package="com.clone.insta">
    <application
         android:label="insta"
         android:icon="@mipmap/ic_launcher">

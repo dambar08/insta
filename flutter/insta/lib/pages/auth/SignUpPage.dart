@@ -139,7 +139,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     _buildForm(),
                     Button(
                         onPressed: () =>
-                            navigateToConfirmation(context, '+852 00000000'),
+                            navigateToConfirmation(context, '+00 00000000'),
                         text: 'Next')
                   ],
                 ),

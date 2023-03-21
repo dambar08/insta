@@ -13,7 +13,18 @@ class _PostsPageState extends State<PostsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Insta"),
+        title: ShaderMask(
+          blendMode: BlendMode.srcIn,
+          shaderCallback: (bounds) => LinearGradient(colors: [
+            Color(0xffDA44bb),
+            Colors.blue.shade900,
+          ]).createShader(
+            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+          ),
+          child: Text(
+            "Insta",
+          ),
+        ),
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,

@@ -11,6 +11,8 @@ class NewFirstPage extends StatefulWidget {
 }
 
 class _NewFirstPageState extends State<NewFirstPage> {
+  var rememberMe = false;
+
   Widget _buildForm() {
     return Form(
       child: Column(
@@ -36,8 +38,12 @@ class _NewFirstPageState extends State<NewFirstPage> {
           CheckboxListTile(
             contentPadding: EdgeInsets.all(0),
             controlAffinity: ListTileControlAffinity.leading,
-            value: true,
-            onChanged: (bool? value) {},
+            value: rememberMe,
+            enabled: true,
+            visualDensity: VisualDensity.compact,
+            onChanged: (bool? value) {
+              rememberMe = value ?? false;
+            },
             title: Caption(text: 'Remember Password'),
           ),
           Button(onPressed: () {}, text: 'Continue and Sync Contacts'),

@@ -1,4 +1,4 @@
-package com.dambarbahadurpun.insta
+package com.clone.insta
 
 import io.flutter.embedding.android.FlutterActivity
 
