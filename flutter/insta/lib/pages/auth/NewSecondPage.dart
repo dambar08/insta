@@ -81,7 +81,7 @@ class _NewSecondPageState extends State<NewSecondPage> {
         SizedBox(
           height: 200,
           child: CupertinoDatePicker(
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.black,
             mode: CupertinoDatePickerMode.date,
             minimumDate: DateTime.now().subtract(Duration(days: 365 * 80)),
             initialDateTime: DateTime.now(),

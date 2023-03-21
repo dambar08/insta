@@ -9,7 +9,7 @@ class HelpPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Help Centre'),
       ),
-      body: WebView(),
+      body: Text(''),
     );
   }
 }

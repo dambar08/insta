@@ -79,6 +79,7 @@ class _InstaApplicationState extends State<InstaApplication> {
           bottomAppBarTheme: BottomAppBarTheme(color: Colors.white),
           appBarTheme: AppBarTheme(
             centerTitle: false,
+            backgroundColor: Colors.black,
           ),
         ),
         initialRoute: '/',
