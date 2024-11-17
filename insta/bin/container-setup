@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+
+    if hash docker 2>/dev/null; then
+        CONTAINER_RUNTIME=docker
+    else
+
+      echo "Error! We could not find docker on your Mac!"
+      echo "Please install Docker for Mac:"
+      echo "https://docs.docker.com/docker-for-mac/install/"
+
+      exit 1
+
+    fi
+
+    if hash docker-compose 2>/dev/null; then
+        CONTAINER_COMPOSE=docker-compose
+    else
+
+      echo "Error! We could not find a docker-compose on your Mac!"
+      echo "Please install Docker for Mac:"
+      echo "https://docs.docker.com/docker-for-mac/install/"
+
+      exit 1
+
+    fi
+
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+
+    if hash docker 2>/dev/null; then
+        CONTAINER_RUNTIME=docker
+    else
+
+      echo "Error! We could not find a container runtime on your Linux install!"
+      echo "Please install Docker:"
+      echo "https://docs.docker.com/compose/install"
+
+      exit 1
+
+    fi
+
+    
+    if hash docker 2>/dev/null; then
+        CONTAINER_COMPOSE=docker-compose
+    else
+
+      echo "Error! We could not find ${CONTAINER_COMPOSE} on your Linux install!"
+      echo "Please install Docker Compose:" 
+      echo "https://docs.docker.com/compose/install"
+
+      exit 1
+
+    fi
+
+else
+
+  echo "Oof! Sorry! This OS is unsupported! :("
+  echo "If you're on Windows OS and have Docker for Windows installed:"
+  echo "Docker: https://docs.docker.com/docker-for-windows/install/"
+  echo
+  echo "Execute the following:"
+  echo "docker-compose build"
+  echo "docker-compose up"
+
+  exit 1
+
+fi
+
+echo "Starting the Forem container stack..."
+
+if [ "${CONTAINER_RUNTIME}" = "docker" ]; then
+
+  if [[ ! -d vendor/bundle || ! "$(ls -A vendor/bundle)" ]]; then
+    echo "The vendor/bundle directory is empty or does not exist."
+    echo "This will cause bundle install to run which takes a long time with ${CONTAINER_RUNTIME}."
+    echo "Depending on your hardware specs, the initial setup can take"
+    echo "30 to 45 minutes. Please stand by..."
+    sleep 10
+  fi
+
+  docker-compose up
+fi

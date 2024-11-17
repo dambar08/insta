@@ -1,0 +1,10 @@
+@import "@primer/css/dist/primer.css";
+@import "@primer/view-components/app/assets/styles/primer_view_components.css";
+@import "@primer/primitives/dist/css/primitives.css";
+@import "@primer/primitives/dist/css/functional/themes/light.css";
+@import "@primer/primitives/dist/css/functional/themes/dark.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+

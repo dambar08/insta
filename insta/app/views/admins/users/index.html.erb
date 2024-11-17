@@ -1,0 +1,23 @@
+<p style="color: green"><%= notice %></p>
+<h1>Users</h1>
+<div id="admins_users">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Username</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td id="<%= dom_id user %>">
+            <div><%= user.username %></div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+    </tfoot>
+  </table>
+</div>
+<%= link_to "New user", new_admins_user_path %>

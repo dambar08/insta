@@ -1,0 +1,162 @@
+name: insta
+x-app: &app
+  build:
+    target: development
+    context: .
+    args:
+      PG_MAJOR: '16'
+  image: alpine:3.20.3
+  environment: &env
+    NODE_ENV: ${NODE_ENV:-development}
+    RAILS_ENV: ${RAILS_ENV:-development}
+
+x-backend: &backend
+  <<: *app
+  stdin_open: true
+  tty: true
+  volumes:
+    - bundle:/usr/local/bundle
+    - rails_cache:/app/tmp/cache
+    - assets:/app/public/assets
+    - node_modules:/app/node_modules
+    - builds:/app/public/builds
+
+  environment: &backend_environment
+    <<: *env
+    REDIS_URL: redis://redis:6379/
+    DATABASE_URL: postgres://insta:insta@db:5432/insta_development
+    DATABASE_URL_TEST: postgres://insta:insta@testdb:5432/insta_test
+    MALLOC_ARENA_MAX: 2
+    WEB_CONCURRENCY: ${WEB_CONCURRENCY:-1}
+    BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
+    XDG_DATA_HOME: /app/tmp/cache
+    YARN_CACHE_FOLDER: /app/node_modules/.yarn-cache
+    HISTFILE: /usr/local/hist/.bash_history
+    PSQL_HISTFILE: /usr/local/hist/.psql_history
+    IRB_HISTFILE: /usr/local/hist/.irb_history
+    RACK_TIMEOUT_WAIT_TIMEOUT: 10000
+    RACK_TIMEOUT_SERVICE_TIMEOUT: 10000
+    STATEMENT_TIMEOUT: 10000
+    APP_DOMAIN: localhost:3000
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+      
+services:
+  rails:
+    <<: *backend
+    command: bundle exec rails
+
+  web:
+    <<: *backend
+    command: bundle exec rails server -b 0.0.0.0
+    ports:
+      - '3000:3000'
+    depends_on:
+      webpack:
+        condition: service_started
+      sidekiq:
+        condition: service_started
+
+  caddy:
+    image: caddy:latest
+    command: caddy reverse-proxy --from localhost --to rails:3000
+    restart: unless-stopped
+    environment:
+      - HOST=localhost
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+  css:
+    <<: *app
+    command: yarn build:css --watch
+    volumes:
+      - bundle:/usr/local/bundle
+      - node_modules:/app/node_modules
+      - builds:/app/assets/builds
+    environment:
+      <<: *env
+      YARN_CACHE_FOLDER: /app/node_modules/.yarn-cache
+
+  webpack:
+    <<: *app
+    command: yarn build --watch
+    volumes:
+      - bundle:/usr/local/bundle
+      - node_modules:/app/node_modules
+      - builds:/app/assets/builds
+    environment:
+      <<: *env
+      YARN_CACHE_FOLDER: /app/node_modules/.yarn-cache
+
+  sidekiq:
+    <<: *backend
+    command: bundle exec sidekiq -c 2
+
+  db:
+    image: postgres:16-alpine
+    shm_size: 256mb
+    build:
+      context: .
+      dockerfile: postgres/Dockerfile
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER}']
+    environment:
+      POSTGRES_USER: insta
+      POSTGRES_PASSWORD: insta
+      POSTGRES_DB: insta_development
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+     - db_data:/var/lib/postgresql/data 
+    ports:
+      - "127.0.0.1:5432:5432"
+
+  testdb:
+    image: postgres:16-alpine
+    shm_size: 256mb
+    build:
+      context: .
+      dockerfile: postgres/Dockerfile
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER}']
+    environment:
+      POSTGRES_USER: insta
+      POSTGRES_PASSWORD: insta
+      POSTGRES_DB: insta_test
+    volumes:
+     - testdb_data:/var/lib/postgresql/data 
+    ports:
+      - "127.0.0.1:5433:5433"
+
+  redis:
+    image: redis:7.2.5-alpine
+    healthcheck:
+      test: redis-cli ping
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    ports:
+      - 127.0.0.1:6379:6379
+
+volumes:
+  db_data:
+  testdb_data:
+  caddy_data:
+  caddy_config:
+  bundle:
+  node_modules:
+  rails_cache:
+  postgres:
+  redis:
+  assets:
+  builds:
+  mongo:

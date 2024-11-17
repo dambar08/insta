@@ -1,0 +1,179 @@
+version: "3"
+services:
+  rails:
+    image: quay.io/forem/forem:development
+    container_name: insta_rails
+    user: root
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -q --spider --proxy=off localhost:3000/health || exit 1']
+    depends_on:
+      - bundle
+      - db
+      - redis
+      - yarn
+      - testdb
+        # condition: service_healthy
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgresql://insta:insta@db:5432/insta_development
+      DATABASE_URL_TEST: postgresql://insta:insta@testdb:5432/Insta_test
+      REDIS_SESSIONS_URL: redis://redis:6379
+      REDIS_SIDEKIQ_URL: redis://redis:6379
+      REDIS_URL: redis://redis:6379
+      RACK_TIMEOUT_WAIT_TIMEOUT: 10000
+      RACK_TIMEOUT_SERVICE_TIMEOUT: 10000
+      STATEMENT_TIMEOUT: 10000
+      APP_DOMAIN: localhost:3000
+    tmpfs:
+      - /tmp
+    volumes:
+      - .:/opt/apps/insta:delegated
+    # entrypoint: ["dockerize", "-wait", "tcp://db:5432", "-wait", "tcp://redis:6379", "-wait", "file:///opt/apps/insta/vendor/bundle/.bundle_finished", "-timeout", "2700s", "-wait-retry-interval", "10s"]
+    # command: [ "bash", "-c", "./scripts/entrypoint.sh bootstrap && bundle exec rails server -b 0.0.0.0 -p 3000"]
+    command: bash -c "rm -f /insta/tmp/pids/server.pid; bundle exec rails s -p 3000"
+
+  caddy:
+    image: caddy:latest
+    command: caddy reverse-proxy --from localhost --to rails:3000
+    restart: unless-stopped
+    environment:
+      - HOST=localhost
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+
+  bundle:
+    image: quay.io/forem/forem:development
+    container_name: insta_bundle
+    user: root
+    environment:
+      RAILS_ENV: development
+      REDIS_SESSIONS_URL: redis://redis:6379
+      REDIS_SIDEKIQ_URL: redis://redis:6379
+      REDIS_URL: redis://redis:6379
+      DATABASE_URL: postgresql://insta:insta@db:5432/insta_development
+    volumes:
+      - .:/opt/apps/insta:delegated
+    command: ["./scripts/bundle.sh"]
+
+  yarn:
+    image: quay.io/forem/forem:development
+    container_name: insta_yarn
+    user: root
+    environment:
+      RAILS_ENV: development
+      REDIS_SESSIONS_URL: redis://redis:6379
+      REDIS_SIDEKIQ_URL: redis://redis:6379
+      REDIS_URL: redis://redis:6379
+      DATABASE_URL: postgresql://insta:insta@db:5432/insta_development
+    volumes:
+      - .:/opt/apps/insta:delegated
+    command: yarn install --dev
+
+  webpacker:
+    image: quay.io/forem/forem:development
+    container_name: insta_webpacker
+    user: root
+    depends_on:
+      - bundle
+      - rails
+      - yarn
+    environment:
+      RAILS_ENV: development
+      REDIS_SESSIONS_URL: redis://redis:6379
+      REDIS_SIDEKIQ_URL: redis://redis:6379
+      REDIS_URL: redis://redis:6379
+      DATABASE_URL: postgresql://insta:insta@db:5432/insta_development
+    volumes:
+      - .:/opt/apps/insta:delegated
+    entrypoint: ["dockerize", "-wait", "file:///opt/apps/insta/node_modules/.bin/webpack-dev-server", "-wait", "file:///opt/apps/insta/vendor/bundle/.bundle_finished", "-timeout", "2700s", "-wait-retry-interval", "10s"]
+    command: ["./bin/webpack-dev-server"]
+
+  seed:
+    image: quay.io/forem/forem:development
+    container_name: insta_seed
+    user: root
+    depends_on:
+      - rails
+      - redis
+      - db
+    environment:
+      RAILS_ENV: development
+      REDIS_SESSIONS_URL: redis://redis:6379
+      REDIS_SIDEKIQ_URL: redis://redis:6379
+      REDIS_URL: redis://redis:6379
+      DATABASE_URL: postgresql://insta:insta@db:5432/insta_development
+    volumes:
+      - .:/opt/apps/insta:delegated
+    # entrypoint: ["dockerize", "-wait", "tcp://db:5432", "-wait", "tcp://redis:6379", "-wait", "tcp://rails:3000", "-timeout", "2700s", "-wait-retry-interval", "20s"]
+    command: ["bundle", "exec", "rake","db:seed"]
+
+  sidekiq:
+    image: quay.io/forem/forem:development
+    container_name: insta_sidekiq
+    user: root
+    healthcheck:
+      test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 6' || false"]
+    depends_on:
+      - rails
+      - redis
+      - db
+    environment:
+      RAILS_ENV: development
+      REDIS_SESSIONS_URL: redis://redis:6379
+      REDIS_SIDEKIQ_URL: redis://redis:6379
+      REDIS_URL: redis://redis:6379
+      DATABASE_URL: postgresql://insta:insta@db:5432/insta_development
+    volumes:
+      - .:/opt/apps/insta:delegated
+    # entrypoint: ["dockerize", "-wait", "tcp://db:5432", "-wait", "tcp://redis:6379", "-wait", "tcp://rails:3000", "-timeout", "2700s", "-wait-retry-interval", "20s"]
+    command: ["bundle", "exec", "sidekiq","-c","2"]
+
+  db:
+    image: postgres:13-alpine
+    container_name: insta_postgresql
+    shm_size: 256mb
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'postgres']
+    environment:
+      POSTGRES_USER: insta
+      POSTGRES_PASSWORD: insta
+      POSTGRES_DB: insta_development
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data:delegated
+
+  testdb:
+    image: postgres:13-alpine
+    container_name: insta_postgresql_test
+    environment:
+      POSTGRES_USER: insta
+      POSTGRES_PASSWORD: insta
+      POSTGRES_DB: Insta_test
+    expose:
+      - "5432"
+    volumes:
+      - testdb_data:/var/lib/postgresql/data:delegated
+
+  redis:
+    image: redis:6.0.9-alpine
+    container_name: insta_redis
+    restart: always
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+    ports:
+      - "6379:6379"
+
+volumes:
+  db_data:
+  testdb_data:
+  caddy_data:
+  caddy_config:

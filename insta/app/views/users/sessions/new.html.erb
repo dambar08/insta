@@ -1,0 +1,40 @@
+<h2>Log in</h2>
+<div>
+    <div>Icon</div>
+    <i class="fa-brands fa-font-awesome w-4 h-4"></i>
+    <%= icon('fa-brands', 'font-awesome', "aria-hidden": false)%>
+  </div>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+  <i class="fa-brands fa-font-awesome"></i>
+  <i class="fa-solid fa-user-secret"></i>
+  <i class="fa-regular fa-bell"></i>
+  <div>
+    <div>Icon</div>
+    <%= icon('fa-brands', 'font-awesome')%>
+  </div>
+  <%= icon('fa-solid', 'user-secret')%>
+  <%= icon('fa-regular', 'bell')%>
+  <div data-controller="password-visibility">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "current-password" %>
+    <input type="password" data-password-visibility-target="input" spellcheck="false" />
+    <button type="button" data-action="password-visibility#toggle">
+      <span data-password-visibility-target="icon">Eye</span>
+      <span data-password-visibility-target="icon" class="hidden">Eye Slash</span>
+    </button>
+  </div>
+  <% if devise_mapping.rememberable? %>
+    <div class="field">
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me %>
+    </div>
+  <% end %>
+  <div class="actions">
+    <%= f.submit "Log in" %>
+  </div>
+<% end %>
+<%= render "users/shared/links" %>
