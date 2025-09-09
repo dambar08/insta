@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     end
   end
   use_doorkeeper
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
   mount Rswag::Api::Engine => "/api-docs"
   mount Rswag::Ui::Engine => "/api-docs"
 
