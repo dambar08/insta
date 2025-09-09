@@ -4,11 +4,13 @@
 #
 # Table name: follows
 #
-#  id           :bigint           not null, primary key
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  follower_id  :bigint           not null
-#  following_id :bigint           not null
+#  id             :bigint           not null, primary key
+#  follower_type  :string           not null
+#  following_type :string           not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  follower_id    :bigint           not null
+#  following_id   :bigint           not null
 #
 # Indexes
 #
@@ -20,5 +22,6 @@
 #  fk_rails_...  (following_id => users.id)
 #
 class Follow < ApplicationRecord
-  belongs_to :user, inverse_of: :followers
+  belongs_to :followable, polymorphic: true
+  belongs_to :follower, polymorphic: true
 end
