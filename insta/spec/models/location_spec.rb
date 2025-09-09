@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: locations
@@ -18,8 +20,8 @@
 #
 #  index_locations_on_locatorable_id_and_locatorable_type  (locatorable_id,locatorable_type)
 #
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe Location, type: :model do
+RSpec.describe(Location, type: :model) do
   pending "add some examples to (or delete) #{__FILE__}"
 end

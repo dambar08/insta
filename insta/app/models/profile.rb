@@ -23,5 +23,4 @@ class Profile < ApplicationRecord
   # has_paper_trail versions: { class_name: "UserVersion" }
 
   belongs_to :user
-
 end

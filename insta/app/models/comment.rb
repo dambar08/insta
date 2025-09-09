@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: comments
@@ -20,7 +22,7 @@ class Comment < ApplicationRecord
   include PgSearch::Model
   acts_as_paranoid
 
-  COMMENTABLE_TYPES = %w[Post].freeze
+  COMMENTABLE_TYPES = ["Post"].freeze
   belongs_to :commentable
 
   validates :commentable_id, presence: true, if: :commentable_type

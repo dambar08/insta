@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 module Account
   module Counters
     extend ActiveSupport::Concern
 
-    ALLOWED_COUNTER_KEYS = %i(posts_count following_count followers_count).freeze
-
+    ALLOWED_COUNTER_KEYS = [:posts_count, :following_count, :followers_count].freeze
 
     included do
       has_one :account_stat, inverse_of: :account, dependent: nil
@@ -11,13 +12,13 @@ module Account
     end
 
     delegate :posts_count,
-             :posts_count=,
-             :following_count,
-             :following_count=,
-             :followers_count,
-             :followers_count=,
-             :last_post_at,
-             to: :account_stat
+      :posts_count=,
+      :following_count,
+      :following_count=,
+      :followers_count,
+      :followers_count=,
+      :last_post_at,
+      to: :account_stat
 
     # @param [Symbol] key
     def increment_count!(key)
@@ -33,13 +34,13 @@ module Account
     # @param [Integer] value
     def update_count!(key, value)
       raise ArgumentError, "Invalid key #{key}" unless ALLOWED_COUNTER_KEYS.include?(key)
-      raise ArgumentError, 'Do not call update_count! on dirty objects' if association(:account_stat).loaded? && account_stat&.changed? && account_stat.changed_attribute_names_to_save == %w(id)
+      raise ArgumentError, "Do not call update_count! on dirty objects" if association(:account_stat).loaded? && account_stat&.changed? && account_stat.changed_attribute_names_to_save == ["id"]
 
       result = updated_account_stat(key, value.to_i)
 
       # Reload account_stat if it was loaded, taking into account newly-created unsaved records
       if association(:account_stat).loaded?
-        account_stat.id = result.first['id'] if account_stat.new_record?
+        account_stat.id = result.first["id"] if account_stat.new_record?
         account_stat.reload
       end
     end
@@ -54,9 +55,9 @@ module Account
       AccountStat.upsert(
         initial_values(key, value),
         on_duplicate: Arel.sql(
-          duplicate_values(key, value).join(', ')
+          duplicate_values(key, value).join(", "),
         ),
-        unique_by: :account_id
+        unique_by: :account_id,
       )
     end
 
@@ -67,8 +68,8 @@ module Account
     end
 
     def duplicate_values(key, value)
-      ["#{key} = (account_stats.#{key} + #{value})", 'updated_at = CURRENT_TIMESTAMP'].tap do |values|
-        values << 'last_post_at = CURRENT_TIMESTAMP' if key == :posts_count && value.positive?
+      ["#{key} = (account_stats.#{key} + #{value})", "updated_at = CURRENT_TIMESTAMP"].tap do |values|
+        values << "last_post_at = CURRENT_TIMESTAMP" if key == :posts_count && value.positive?
       end
     end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: admins
@@ -30,8 +32,8 @@
 #  index_admins_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_admins_on_unlock_token          (unlock_token) UNIQUE
 #
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe Admin, type: :model do
+RSpec.describe(Admin, type: :model) do
   pending "add some examples to (or delete) #{__FILE__}"
 end

@@ -10,7 +10,7 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-Dotenv::Rails.load if Rails.env.test? || Rails.env.development?
+Dotenv::Rails.load if Rails.env.local?
 
 module Insta
   class Application < Rails::Application

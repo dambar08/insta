@@ -1,8 +1,10 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe "users/new", type: :view do
-  before(:each) do
-    assign(:user, User.new())
+require "rails_helper"
+
+RSpec.describe("users/new", type: :view) do
+  before do
+    assign(:user, User.new)
   end
 
   it "renders new user form" do

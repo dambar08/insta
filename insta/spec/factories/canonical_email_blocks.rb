@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: canonical_email_blocks
@@ -15,6 +17,5 @@
 #
 FactoryBot.define do
   factory :canonical_email_block do
-    
   end
 end

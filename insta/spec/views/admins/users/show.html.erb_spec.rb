@@ -1,8 +1,10 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe "admins/users/show", type: :view do
-  before(:each) do
-    assign(:admins_user, Admins::User.create!())
+require "rails_helper"
+
+RSpec.describe("admins/users/show", type: :view) do
+  before do
+    assign(:admins_user, Admins::User.create!)
   end
 
   it "renders attributes in <p>" do

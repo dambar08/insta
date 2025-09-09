@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: follows
@@ -17,8 +19,8 @@
 #  fk_rails_...  (follower_id => users.id)
 #  fk_rails_...  (following_id => users.id)
 #
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe Follow, type: :model do
+RSpec.describe(Follow, type: :model) do
   pending "add some examples to (or delete) #{__FILE__}"
 end

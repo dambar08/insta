@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: account_stats
@@ -22,6 +24,5 @@
 #
 FactoryBot.define do
   factory :account_stat do
-    
   end
 end

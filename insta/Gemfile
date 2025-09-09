@@ -4,106 +4,106 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.4"
-gem "rails", "~> 7.2.1" # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "pg", "~> 1.1" # Use postgresql as the database for Active Record
-gem "puma", "~> 6.3" # Use the Puma web server [https://github.com/puma/puma]
-gem "propshaft", "~> 1.1"
-gem "jsbundling-rails" # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
-gem "turbo-rails" # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails
-gem "stimulus-rails" # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
-gem "cssbundling-rails" # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
-gem "jbuilder" # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
-gem "redis", "~> 4.8" # Use Redis adapter to run Action Cable in production
-gem "kredis" # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
+gem "active_record_extended", "~> 3.2"
+gem "acts_as_paranoid", "~> 0.10.2"
+gem "ahoy_matey", "~> 4.2"
+gem "annotate", "~> 3.2"
+gem "audited", "~> 5.3"
 gem "bcrypt", "~> 3.1.7" # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "better_errors", "~> 2.10"
+gem "binding_of_caller", "~> 1.0"
+gem "blazer", "~> 2.6"
 gem "bootsnap", require: false # Reduces boot times through caching; required in config/boot.rb
-gem "sassc-rails" # Use Sass to process CSS
-gem "image_processing", "~> 1.2" # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "pundit", "~> 2.3"
+gem "cloudinary", "~> 1.27"
+gem "cssbundling-rails" # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
 gem "devise", "~> 4.9"
-gem "kaminari", "~> 1.2"
+gem "devise_invitable", "~> 2.0"
+gem "doorkeeper", "~> 5.6"
+gem "dotenv-rails", "~> 3.1"
 gem "down", "~> 5.4"
 gem "draper", "~> 4.0"
+gem "field_test", "~> 0.7.0"
+gem "font-awesome-sass", "~> 6.4"
+gem "friendly_id", "~> 5.5"
+gem "image_processing", "~> 1.2" # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+gem "jbuilder" # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
+gem "jsbundling-rails" # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
+gem "kaminari", "~> 1.2"
+gem "kredis" # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
+gem "letter_opener", "~> 1.8"
+gem "memory_profiler", "~> 1.0"
+gem "pagy", "~> 9.2"
+gem "paper_trail", "~> 15.0"
+gem "parallel_tests", "~> 4.2"
+gem "pg", "~> 1.1" # Use postgresql as the database for Active Record
+gem "pg_search", "~> 2.3"
+gem "primer_view_components", "~> 0.10.0"
+gem "propshaft", "~> 1.1"
+gem "pry-rails", "~> 0.3.9"
+gem "puma", "~> 6.3" # Use the Puma web server [https://github.com/puma/puma]
+gem "pundit", "~> 2.3"
 gem "rack-attack", "~> 6.7"
-gem "warning", "~> 1.3"
-gem "cloudinary", "~> 1.27"
-gem "audited", "~> 5.3"
+gem "rack-timeout", "~> 0.6.3"
+gem "rails", "~> 7.2.1" # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "ransack", github: "activerecord-hackery/ransack", branch: "main"
-gem "annotate", "~> 3.2"
-gem "dotenv-rails", "~> 3.1"
+gem "redis", "~> 4.8" # Use Redis adapter to run Action Cable in production
+gem "rpush", "~> 7.0"
 gem "rswag-api", "~> 2.10"
 gem "rswag-ui", "~> 2.10"
 gem "ruby-lsp", "~> 0.10.1"
-gem "parallel_tests", "~> 4.2"
 gem "rugged", "~> 1.6"
-gem "undercover", "~> 0.4.6"
-gem "binding_of_caller", "~> 1.0"
-gem "pagy", "~> 9.2"
-gem "better_errors", "~> 2.10"
-gem "letter_opener", "~> 1.8"
-gem "memory_profiler", "~> 1.0"
-gem "pry-rails", "~> 0.3.9"
-gem "rpush", "~> 7.0"
-gem "active_record_extended", "~> 3.2"
-gem "blazer", "~> 2.6"
-gem "view_component", "~> 3.6"
-gem "vault", "~> 0.18.1"
-gem "friendly_id", "~> 5.5"
-gem "ahoy_matey", "~> 4.2"
-gem "doorkeeper", "~> 5.6"
+gem "sassc-rails" # Use Sass to process CSS
 gem "sidekiq", "~> 7.1"
-gem "rack-timeout", "~> 0.6.3"
-gem "paper_trail", "~> 15.0"
-gem "acts_as_paranoid", "~> 0.10.2"
-gem "font-awesome-sass", "~> 6.4"
-gem "devise_invitable", "~> 2.0"
-gem "pg_search", "~> 2.3"
-gem "field_test", "~> 0.7.0"
-gem "primer_view_components", "~> 0.10.0"
+gem "stimulus-rails" # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
+gem "turbo-rails" # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails
+gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "undercover", "~> 0.4.6"
+gem "vault", "~> 0.18.1"
+gem "view_component", "~> 3.6"
+gem "warning", "~> 1.3"
 
 group :development, :test do
+  gem "byebug", "~> 11.1", require: false
   gem "debug", platforms: [:mri, :mingw, :x64_mingw] # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "rspec-rails", "~> 6.0"
-  gem "byebug", "~> 11.1", require: false
 end
 
 group :development do
-  gem "web-console" # Use console on exceptions pages [https://github.com/rails/web-console]
-  gem "rack-mini-profiler" # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
-  gem "spring" # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
+  gem "erb_lint", "~> 0.5.0"
+  gem "factory_bot_rails", "~> 6.2"
   gem "guard", "~> 2.18"
   gem "guard-rspec", "~> 4.7"
-  gem "factory_bot_rails", "~> 6.2"
   gem "hotwire-livereload", "~> 1.2"
   gem "htmlbeautifier", "~> 1.4"
-  gem "erb_lint", "~> 0.5.0"
+  gem "rack-mini-profiler" # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
+  gem "spring" # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
+  gem "web-console" # Use console on exceptions pages [https://github.com/rails/web-console]
 end
 
 group :test do
-  gem "capybara" # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem "selenium-webdriver"
-  gem "webdrivers"
-  gem "brakeman", "~> 6.0"
-  gem "simplecov", require: false
-  gem "simplecov-lcov", require: false
-  gem "rubocop-shopify", "~> 2.14"
-  gem "rubocop-performance", "~> 1.19"
-  gem "rubocop-rails", "~> 2.21"
-  gem "rubocop-rspec", "~> 2.24"
-  gem "rubocop-rake", "~> 0.6.0"
-  gem "rubocop-factory_bot", "~> 2.23"
-  gem "rubocop-thread_safety", "~> 0.5.1"
-  gem "rspec-retry", "~> 0.6.2"
-  gem "timecop", "~> 0.9.8"
-  gem "shoulda-matchers", "~> 5.3"
-  gem "bundler-audit", "~> 0.9.1"
-  gem "stackprof", "~> 0.2.25"
-  gem "test-prof", "~> 1.2"
   gem "benchmark-ips", "~> 2.12"
   gem "benchmark-memory", "~> 0.2.0"
+  gem "brakeman", "~> 6.0"
+  gem "bundler-audit", "~> 0.9.1"
+  gem "capybara" # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "faker", "~> 3.2"
   gem "pundit-matchers", "~> 3.1"
+  gem "rspec-retry", "~> 0.6.2"
+  gem "rubocop-factory_bot", "~> 2.23"
+  gem "rubocop-performance", "~> 1.19"
+  gem "rubocop-rails", "~> 2.21"
+  gem "rubocop-rake", "~> 0.6.0"
+  gem "rubocop-rspec", "~> 2.24"
+  gem "rubocop-shopify", "~> 2.14"
+  gem "rubocop-thread_safety", "~> 0.5.1"
+  gem "selenium-webdriver"
+  gem "shoulda-matchers", "~> 5.3"
+  gem "simplecov", require: false
+  gem "simplecov-lcov", require: false
+  gem "stackprof", "~> 0.2.25"
+  gem "test-prof", "~> 1.2"
+  gem "timecop", "~> 0.9.8"
+  gem "webdrivers"
 end
 
 group :production do

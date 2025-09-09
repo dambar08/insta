@@ -1,8 +1,10 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe "posts/show", type: :view do
-  before(:each) do
-    assign(:post, Post.create!())
+require "rails_helper"
+
+RSpec.describe("posts/show", type: :view) do
+  before do
+    assign(:post, Post.create!)
   end
 
   it "renders attributes in <p>" do

@@ -20,8 +20,6 @@ class Account < ApplicationRecord
   DISPLAY_NAME_LENGTH_LIMIT = 30
   NOTE_LENGTH_LIMIT = 500
 
-
-
   validates :username, presence: true
   validates_with UniqueUsernameValidator, if: -> { will_save_change_to_username? }
   validates :display_name, length: { maximum: DISPLAY_NAME_LENGTH_LIMIT }, if: -> { will_save_change_to_display_name? }
@@ -29,5 +27,5 @@ class Account < ApplicationRecord
   validates :fields, length: { maximum: DEFAULT_FIELDS_SIZE }, if: -> { will_save_change_to_fields? }
 
   scope :recent, -> { reorder(id: :desc) }
-  scope :with_username, ->(value) { where arel_table[:username].lower.eq(value.to_s.downcase) }
+  scope :with_username, ->(value) { where(arel_table[:username].lower.eq(value.to_s.downcase)) }
 end

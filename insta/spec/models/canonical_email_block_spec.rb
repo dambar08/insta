@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: canonical_email_blocks
@@ -13,8 +15,8 @@
 #  index_canonical_email_blocks_on_canonical_email_hash  (canonical_email_hash) UNIQUE
 #  index_canonical_email_blocks_on_reference_account_id  (reference_account_id)
 #
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe CanonicalEmailBlock, type: :model do
+RSpec.describe(CanonicalEmailBlock, type: :model) do
   pending "add some examples to (or delete) #{__FILE__}"
 end

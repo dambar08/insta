@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe Api::V1::UserDecorator do
+require "rails_helper"
+
+RSpec.describe(Api::V1::UserDecorator) do
 end

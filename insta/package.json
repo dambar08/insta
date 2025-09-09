@@ -14,6 +14,7 @@
     "@rails/actiontext": "^7.0.8",
     "@shopify/polaris": "^11.25.0",
     "ahoy.js": "^0.4.3",
+    "astroturf": "^1.2.0",
     "autoprefixer": "^10.4.15",
     "husky": "^8.0.3",
     "postcss": "^8.4.29",
@@ -41,6 +42,7 @@
     "build": "webpack --config webpack.config.js"
   },
   "devDependencies": {
+    "astroturf-loader": "^1.0.0",
     "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-babel": "^5.3.1",

@@ -1,11 +1,13 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe "admins/users/edit", type: :view do
-  let(:admins_user) {
-    Admins::User.create!()
-  }
+require "rails_helper"
 
-  before(:each) do
+RSpec.describe("admins/users/edit", type: :view) do
+  let(:admins_user) do
+    Admins::User.create!
+  end
+
+  before do
     assign(:admins_user, admins_user)
   end
 

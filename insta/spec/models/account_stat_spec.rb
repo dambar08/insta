@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: account_stats
@@ -20,8 +22,8 @@
 #
 #  fk_rails_...  (account_id => accounts.id)
 #
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe AccountStat, type: :model do
+RSpec.describe(AccountStat, type: :model) do
   pending "add some examples to (or delete) #{__FILE__}"
 end

@@ -4,7 +4,7 @@ module Exception
   class Notifier
     class << self
       def track_exception(exception, opts = {})
-        if Rails.env.development? || Rails.env.test?
+        if Rails.env.local?
           Rails.logger.error(exception.message)
           Rails.logger.error(exception.backtrace)
         end

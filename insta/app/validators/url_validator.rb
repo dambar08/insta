@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class URLValidator < ActiveModel::EachValidator
-  VALID_SCHEMES = %w(http https).freeze
+  VALID_SCHEMES = ["http", "https"].freeze
 
   def validate_each(record, attribute, value)
     @value = value

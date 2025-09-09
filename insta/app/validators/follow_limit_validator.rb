@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 class FollowLimitValidator < ActiveModel::Validator
-  LIMIT = ENV.fetch('MAX_FOLLOWS_THRESHOLD', 7_500).to_i
-  RATIO = ENV.fetch('MAX_FOLLOWS_RATIO', 1.1).to_f
+  LIMIT = ENV.fetch("MAX_FOLLOWS_THRESHOLD", 7_500).to_i
+  RATIO = ENV.fetch("MAX_FOLLOWS_RATIO", 1.1).to_f
 
   def validate(follow)
     return if follow.account.nil? || !follow.account.local?
 
-    follow.errors.add(:base, I18n.t('users.follow_limit_reached', limit: self.class.limit_for_account(follow.account))) if limit_reached?(follow.account)
+    follow.errors.add(:base, I18n.t("users.follow_limit_reached", limit: self.class.limit_for_account(follow.account))) if limit_reached?(follow.account)
   end
 
   class << self

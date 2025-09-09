@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class CreateLocations < ActiveRecord::Migration[7.2]
   def change
-    create_table :locations do |t|
+    create_table(:locations) do |t|
       t.bigint(:locatorable_id)
       t.bigint(:locatorable_type)
       t.string(:name)
@@ -12,6 +14,6 @@ class CreateLocations < ActiveRecord::Migration[7.2]
       t.timestamps
     end
 
-    add_index :locations, [:locatorable_id,:locatorable_type]
+    add_index(:locations, [:locatorable_id, :locatorable_type])
   end
 end

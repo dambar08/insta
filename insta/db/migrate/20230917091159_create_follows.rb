@@ -3,8 +3,10 @@
 class CreateFollows < ActiveRecord::Migration[7.0]
   def up
     create_table(:follows) do |t|
+      t.string("follower_type", null: false)
       t.bigint("follower_id", null: false)
       t.bigint("following_id", null: false)
+      t.string("following_type", null: false)
       t.timestamps
     end
     add_foreign_key(:follows, :users, column: :follower_id)

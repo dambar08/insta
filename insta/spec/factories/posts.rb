@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: posts
@@ -9,6 +11,5 @@
 #
 FactoryBot.define do
   factory :post do
-    
   end
 end
