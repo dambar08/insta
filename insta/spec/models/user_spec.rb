@@ -43,5 +43,11 @@
 require "rails_helper"
 
 RSpec.describe(User, type: :model) do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "associations" do
+    it { is_expected.to(belong_to(:account)) }
+    it { is_expected.to(have_many(:ahoy_events)) }
+    it { is_expected.to(have_many(:ahoy_visits)) }
+    it { is_expected.to(have_many(:access_grants)) }
+    it { is_expected.to(have_many(:access_tokens)) }
+  end
 end
