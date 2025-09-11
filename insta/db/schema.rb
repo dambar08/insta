@@ -10,9 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_09_101214) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_10_083000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "account_blocks", force: :cascade do |t|
+    t.bigint "blocker_id"
+    t.bigint "blocked_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["blocker_id", "blocked_id"], name: "index_account_blocks_on_blocker_id_and_blocked_id", unique: true
+  end
 
   create_table "account_stats", force: :cascade do |t|
     t.bigint "account_id", null: false
@@ -27,8 +35,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_09_101214) do
   end
 
   create_table "accounts", force: :cascade do |t|
+    t.string "username"
+    t.string "firstname"
+    t.string "lastname"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["username"], name: "index_accounts_on_username", unique: true
   end
 
   create_table "action_text_rich_texts", force: :cascade do |t|
@@ -93,6 +105,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_09_101214) do
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_admins_on_unlock_token", unique: true
+  end
+
+  create_table "admins_roles", id: false, force: :cascade do |t|
+    t.bigint "admin_id"
+    t.bigint "role_id"
+    t.index ["admin_id", "role_id"], name: "index_admins_roles_on_admin_id_and_role_id"
+    t.index ["admin_id"], name: "index_admins_roles_on_admin_id"
+    t.index ["role_id"], name: "index_admins_roles_on_role_id"
   end
 
   create_table "ahoy_events", force: :cascade do |t|
@@ -249,13 +269,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_09_101214) do
   end
 
   create_table "follows", force: :cascade do |t|
+    t.boolean "blocked", default: false, null: false
     t.string "follower_type", null: false
     t.bigint "follower_id", null: false
-    t.bigint "following_id", null: false
-    t.string "following_type", null: false
+    t.bigint "followable_id", null: false
+    t.string "followable_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["follower_id", "following_id"], name: "index_follows_on_follower_id_and_following_id", unique: true
+    t.index ["created_at"], name: "index_follows_on_created_at"
+    t.index ["followable_id", "followable_type", "follower_id", "follower_type"], name: "index_follows_on_followable_and_follower", unique: true
+    t.index ["followable_id", "followable_type"], name: "fk_followables"
+    t.index ["follower_type", "follower_id"], name: "fk_follows"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -281,6 +305,24 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_09_101214) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["locatorable_id", "locatorable_type"], name: "index_locations_on_locatorable_id_and_locatorable_type"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "account_id"
+    t.string "action"
+    t.jsonb "json_data"
+    t.bigint "notifiable_id"
+    t.string "notifiable_type"
+    t.datetime "notified_at"
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "notifiable_id", "notifiable_type", "action"], name: "idx_on_account_id_notifiable_id_notifiable_type_act_868a1a32fb"
+    t.index ["account_id", "notifiable_id", "notifiable_type"], name: "idx_on_account_id_notifiable_id_notifiable_type_89a5e23bd7"
+    t.index ["account_id"], name: "index_notifications_on_account_id"
+    t.index ["created_at"], name: "index_notifications_on_created_at"
+    t.index ["notifiable_id", "notifiable_type", "action"], name: "idx_on_notifiable_id_notifiable_type_action_cd1255fd91"
+    t.index ["notified_at"], name: "index_notifications_on_notified_at"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -331,15 +373,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_09_101214) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "profiles", force: :cascade do |t|
-    t.bigint "user_id"
-    t.string "gender"
-    t.string "locale"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_profiles_on_user_id"
-  end
-
   create_table "resources", force: :cascade do |t|
     t.string "type"
     t.string "temporary_url"
@@ -347,6 +380,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_09_101214) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
+    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource"
   end
 
   create_table "rpush_apps", force: :cascade do |t|
@@ -438,16 +481,26 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_09_101214) do
     t.datetime "locked_at"
     t.datetime "deleted_at"
     t.date "dob"
-    t.string "username"
+    t.bigint "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "followers_count", default: 0
     t.bigint "followings_count", default: 0
+    t.bigint "blocked_by_count", default: 0, null: false
+    t.bigint "blocking_others_count", default: 0, null: false
+    t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
-    t.index ["username"], name: "index_users_on_username", unique: true
+  end
+
+  create_table "users_roles", id: false, force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "role_id"
+    t.index ["role_id"], name: "index_users_roles_on_role_id"
+    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
+    t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
   create_table "versions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -463,11 +516,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_09_101214) do
   add_foreign_key "account_stats", "accounts"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "follows", "users", column: "follower_id"
-  add_foreign_key "follows", "users", column: "following_id"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
-  add_foreign_key "profiles", "users"
 end

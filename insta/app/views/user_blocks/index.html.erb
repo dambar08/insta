@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "User blocks" %>
+
+<h1>User blocks</h1>
+
+<div id="user_blocks">
+  <% @user_blocks.each do |user_block| %>
+    <%= render user_block %>
+    <p>
+      <%= link_to "Show this user block", user_block %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New user block", new_user_block_path %>

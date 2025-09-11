@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Account
+module Accounts
   module Counters
     extend ActiveSupport::Concern
 

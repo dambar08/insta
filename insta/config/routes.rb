@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :notifications
+  resources :user_blocks
   devise_for :admins
   devise_for :users
   namespace :admins do

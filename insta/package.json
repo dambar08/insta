@@ -16,6 +16,7 @@
     "ahoy.js": "^0.4.3",
     "astroturf": "^1.2.0",
     "autoprefixer": "^10.4.15",
+    "classnames": "^2.5.1",
     "husky": "^8.0.3",
     "postcss": "^8.4.29",
     "stimulus-character-counter": "^4.2.0",

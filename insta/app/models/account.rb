@@ -5,12 +5,21 @@
 # Table name: accounts
 #
 #  id         :bigint           not null, primary key
+#  firstname  :string
+#  lastname   :string
+#  username   :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_accounts_on_username  (username) UNIQUE
+#
 class Account < ApplicationRecord
-  include Account::Avatar
-  include Account::Counters
+  include Followable
+  include Follower
+  include Accounts::Avatar
+  include Accounts::Counters
 
   USERNAME_RE   = /[a-z0-9_]+([.-]+[a-z0-9_]+)*/i
   MENTION_RE    = %r{(?<![=/[:word:]])@((#{USERNAME_RE})(?:@[[:word:]]+([.-]+[[:word:]]+)*)?)}
@@ -20,12 +29,39 @@ class Account < ApplicationRecord
   DISPLAY_NAME_LENGTH_LIMIT = 30
   NOTE_LENGTH_LIMIT = 500
 
-  validates :username, presence: true
-  validates_with UniqueUsernameValidator, if: -> { will_save_change_to_username? }
-  validates :display_name, length: { maximum: DISPLAY_NAME_LENGTH_LIMIT }, if: -> { will_save_change_to_display_name? }
-  validates :note, note_length: { maximum: NOTE_LENGTH_LIMIT }, if: -> { will_save_change_to_note? }
-  validates :fields, length: { maximum: DEFAULT_FIELDS_SIZE }, if: -> { will_save_change_to_fields? }
+  belongs_to :user, inverse_of: :account
+  has_many :account_pins inverse_of: :account, dependent: :delete_all
+  has_many :blocked_blocks,
+    class_name: "AccountBlock",
+    foreign_key: :blocked_id,
+    inverse_of: :blocked,
+    dependent: :delete_all
+  has_many :blocker_blocks,
+    class_name: "AccountBlock",
+    foreign_key: :blocker_id,
+    inverse_of: :blocker,
+    dependent: :delete_all
 
   scope :recent, -> { reorder(id: :desc) }
   scope :with_username, ->(value) { where(arel_table[:username].lower.eq(value.to_s.downcase)) }
+
+  validates :username, presence: true, length: { in: 2..30 }, uniqueness: true
+
+  before_validation :set_username
+  after_create_commit :send_welcome_notification
+
+  def send_welcome_notification
+    # TODO
+  end
+
+  def set_username
+    self.username = username&.downcase.presence || generate_username
+  end
+
+  def generate_username
+    loop do
+      username = Random.hex(15)
+      break username unless self.class.exists?(username: username)
+    end
+  end
 end

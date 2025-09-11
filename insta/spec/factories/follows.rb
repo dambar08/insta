@@ -4,22 +4,21 @@
 #
 # Table name: follows
 #
-#  id             :bigint           not null, primary key
-#  follower_type  :string           not null
-#  following_type :string           not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  follower_id    :bigint           not null
-#  following_id   :bigint           not null
+#  id              :bigint           not null, primary key
+#  blocked         :boolean          default(FALSE), not null
+#  followable_type :string           not null
+#  follower_type   :string           not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  followable_id   :bigint           not null
+#  follower_id     :bigint           not null
 #
 # Indexes
 #
-#  index_follows_on_follower_id_and_following_id  (follower_id,following_id) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (follower_id => users.id)
-#  fk_rails_...  (following_id => users.id)
+#  fk_followables                            (followable_id,followable_type)
+#  fk_follows                                (follower_type,follower_id)
+#  index_follows_on_created_at               (created_at)
+#  index_follows_on_followable_and_follower  (followable_id,followable_type,follower_id,follower_type) UNIQUE
 #
 FactoryBot.define do
   factory :follow do

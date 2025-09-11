@@ -8,11 +8,26 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 users = []
-10000.times do
+100.times do
   username = Faker::Name.unique.name.split(" ").join("_").downcase
   email = "#{username}@fake.com"
   confirmed_at = Time.zone.now
-  users << { username: username, email: email, password: username, password_confirmation: username, confirmed_at: confirmed_at }
+  users << { account: { username: username }, email: email, password: username, password_confirmation: username, confirmed_at: confirmed_at }
+end
+
+Parallel.map(users, in_threads: 8) do |user|
+  account = user[:account]
+  rest = user.reject { |k, _| k == :account }
+  user = User.create!(rest)
+  user.account.create(account)
+end
+
+users = []
+100.times do
+  username = Faker::Name.unique.name.split(" ").join("_").downcase
+  email = "#{username}@fake.com"
+  confirmed_at = Time.zone.now
+  users << { account_attributes: { username: username }, email: email, password: username, password_confirmation: username, confirmed_at: confirmed_at }
 end
 
 Parallel.map(users, in_threads: 8) do |user|

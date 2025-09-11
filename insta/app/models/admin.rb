@@ -33,6 +33,7 @@
 #  index_admins_on_unlock_token          (unlock_token) UNIQUE
 #
 class Admin < ApplicationRecord
+  rolify strict: true
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable,

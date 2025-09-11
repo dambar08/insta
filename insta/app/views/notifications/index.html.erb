@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Notifications" %>
+
+<h1>Notifications</h1>
+
+<div id="notifications">
+  <% @notifications.each do |notification| %>
+    <%= render notification %>
+    <p>
+      <%= link_to "Show this notification", notification %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New notification", new_notification_path %>

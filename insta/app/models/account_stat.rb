@@ -30,7 +30,7 @@ class AccountStat < ApplicationRecord
   scope :by_recent_post, -> { order(arel_table[:last_post_at].desc.nulls_last) }
   scope :without_recent_activity, -> { where(last_post_at: [nil, ...1.month.ago]) }
 
-  update_index("accounts", :account)
+  # update_index("accounts", :account)
 
   def following_count
     [attributes["following_count"], 0].max

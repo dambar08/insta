@@ -1,0 +1,10 @@
+
+en:
+  models:
+    user:
+      follow_limit_reached: You cannot follow more than %{limit} people
+    account_block:
+      cant_be_the_same: can't be the same as the blocked_id
+    profile_pin:
+      only_five: cannot have more than five total pinned posts
+      pin_unpermitted: must have proper permissions for pin
