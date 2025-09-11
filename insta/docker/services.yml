@@ -14,10 +14,6 @@ services:
       - caddy_data:/data
       - caddy_config:/config
 
-  sidekiq:
-    <<: *backend
-    command: bundle exec sidekiq -c 2
-
   db:
     image: postgres:16-alpine
     shm_size: 256mb
@@ -26,10 +22,13 @@ services:
       dockerfile: postgres/Dockerfile
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_USER: insta
       POSTGRES_PASSWORD: insta
-      POSTGRES_DB: insta_development
+      POSTGRES_DATABASE: insta_development
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
      - db_data:/var/lib/postgresql/data
@@ -44,14 +43,18 @@ services:
       dockerfile: postgres/Dockerfile
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_USER: insta
       POSTGRES_PASSWORD: insta
-      POSTGRES_DB: insta_test
+      POSTGRES_DATABASE: insta_test
+      POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
      - testdb_data:/var/lib/postgresql/data
     ports:
-      - "127.0.0.1:5433:5433"
+      - "127.0.0.1:5433:5432"
 
   redis:
     image: redis:7.2.5-alpine
