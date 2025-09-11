@@ -40,7 +40,9 @@
     "prepare": "husky init",
     "lint:frontend": "eslint 'app/assets/javascripts/**/*.js' 'app/javascript/**/*.jsx' 'app/javascript/**/*.js' 'cypress/**/*.js'",
     "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "docker:services:up": "docker compose -f docker/services.yml up -d",
+    "docker:services:down": "docker compose -f docker/services.yml down"
   },
   "devDependencies": {
     "astroturf-loader": "^1.0.0",
