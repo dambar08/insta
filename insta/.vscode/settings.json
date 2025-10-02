@@ -1,5 +1,11 @@
 {
   "files.associations": {
     "*.html.erb": "erb"
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/.ruby-lsp": true
   }
 }
