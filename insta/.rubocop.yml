@@ -13,7 +13,7 @@ require:
   - rubocop-thread_safety
 
 AllCops:
-  TargetRubyVersion: 3.0.5
+  TargetRubyVersion: 3.2
   DisplayStyleGuide: true
   DisableDefaultCops: false
   ExtraDetails: true
