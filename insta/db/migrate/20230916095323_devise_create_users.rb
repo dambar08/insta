@@ -35,7 +35,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
       # acts_as_paranoid
       t.datetime(:deleted_at)
       t.date(:dob)
-      t.belongs_to(:account)
 
       t.timestamps(null: false)
     end

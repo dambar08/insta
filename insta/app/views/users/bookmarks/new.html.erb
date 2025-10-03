@@ -1,0 +1,11 @@
+<% content_for :title, "New bookmark" %>
+
+<h1>New bookmark</h1>
+
+<%= render "form", bookmark: @bookmark %>
+
+<br>
+
+<div>
+  <%= link_to "Back to bookmarks", users_bookmarks_path %>
+</div>

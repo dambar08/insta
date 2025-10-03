@@ -1,11 +1,14 @@
-const path    = require("path")
-const webpack = require("webpack")
+const path = require("path");
+const webpack = require("webpack");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = {
+  context: __dirname,
   mode: "production",
+  watch: true,
   devtool: "source-map",
   entry: {
-    application: "./app/javascript/application.js"
+    application: "./app/javascript/application.js",
   },
   output: {
     iife: false,
@@ -13,41 +16,62 @@ module.exports = {
     sourceMapFilename: "[file].map",
     path: path.resolve(__dirname, "app/assets/builds"),
   },
+  resolve: {
+    extensions: [".tsx", ".jsx", ".ts", ".js"],
+  },
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: ['style-loader', 'postcss-loader'],
+        test: /\.[jt]sx?$/,
+        use: [
+          "babel-loader",
+          // {
+          //   loader: "astroturf/loader",
+          //   options: {
+          //     extension: ".module.css", // output CSS files as .module.css
+          //     cssLoaderOptions: { modules: true }, // optional, if you want CSS Modules
+          //   },
+          // },
+        ],
+        exclude: /node_modules/,
       },
-      {
-        test: /\.jsx?$/,
-        use: ['babel-loader', 'astroturf/loader'],
-      },
+      // {
+      //   test: /\.css$/,
+      //   use: ["style-loader", "postcss-loader"],
+      //   exclude: /node_modules/,
+      // },
       {
         test: /\.css$/,
         exclude: /node_modules/,
         use: [
           {
-            loader: 'style-loader',
+            loader: "style-loader",
           },
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
               importLoaders: 1,
-            }
+            },
           },
           {
-            loader: 'postcss-loader'
-          }
-        ]
-      }
-    ]
+            loader: "postcss-loader",
+          },
+        ],
+      },
+      // {
+      //   test: /\.tsx?$/,
+      //   use: "ts-loader",
+      //   exclude: /node_modules/,
+      // },
+    ],
   },
   plugins: [
+    new ForkTsCheckerWebpackPlugin(),
     new webpack.optimize.LimitChunkCountPlugin({
-      maxChunks: 1
-    })
-  ]
-}
-
-
+      maxChunks: 1,
+    }),
+  ],
+  watchOptions: {
+    ignored: /node_modules/,
+  },
+};

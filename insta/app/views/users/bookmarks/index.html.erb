@@ -1,0 +1,14 @@
+<% content_for :title, "Bookmarks" %>
+<h1 class="text-3xl font-bold">Bookmarks</h1>
+<%= turbo_stream_from :bookmarks %>
+<div id="bookmarks">
+  <% if @bookmarks.size.positive? %>
+    <% @bookmarks.each do |bookmark| %>
+      <%= render bookmark %>
+    <% end %>
+  <% else %>
+    <%= render partial: "empty" %>
+  <% end %>
+</div>
+
+

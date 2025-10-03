@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%#= stylesheet_link_tag "application", "data-turbo-track": Rails.env.production? ? "reload" : "" %>
+    <%#= javascript_include_tag "application", "data-turbo-track": Rails.env.production? ? "reload" : "", defer: true %>
+
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-    <%= hotwire_livereload_tags if Rails.env.development? %>
   </head>
-  <body data-color-mode="light" data-light-theme="light" data-dark-theme="dark">
-    <%= console if Rails.env.development? %>
+  <body class="antialised">
     <%= render partial: "layouts/shared/notification" %>
     <%= yield %>
   </body>

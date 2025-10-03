@@ -52,6 +52,8 @@ Rails/RakeEnvironment:
   Exclude:
     - 'lib/tasks/auto_annotate_models.rake'
 
+RSpec/MultipleExpectations:
+  Enabled: false
 # # Reason:
 # # https://docs.rubocop.org/rubocop/cops_lint.html#lintuselessaccessmodifier
 # Lint/UselessAccessModifier:

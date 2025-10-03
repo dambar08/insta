@@ -440,3 +440,6 @@ Style/TrailingCommaInArrayLiteral:
 ThreadSafety/ClassAndModuleAttributes:
   Exclude:
     - 'config/initializers/rpush.rb'
+
+RSpec/MultipleExpectations:
+  Enabled: false

@@ -1,18 +1,5 @@
 name: insta
 services:
-  caddy:
-    image: caddy:latest
-    command: caddy reverse-proxy --from localhost --to rails:3000
-    restart: unless-stopped
-    environment:
-      - HOST=localhost
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
-    volumes:
-      - caddy_data:/data
-      - caddy_config:/config
 
   db:
     image: postgres:16-alpine
@@ -60,15 +47,16 @@ services:
     image: redis:7.2.5-alpine
     healthcheck:
       test: redis-cli ping
-      interval: 1s
-      timeout: 3s
-      retries: 30
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - redis:/data
     ports:
       - 127.0.0.1:6379:6379
+
 
 volumes:
   db_data:
   testdb_data:
-  caddy_data:
-  caddy_config:
   redis:

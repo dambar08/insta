@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_10_083000) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_03_065809) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,21 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_083000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["blocker_id", "blocked_id"], name: "index_account_blocks_on_blocker_id_and_blocked_id", unique: true
+  end
+
+  create_table "account_pins", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "account_settings", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.string "var", null: false
+    t.text "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_account_settings_on_account_id"
+    t.index ["var"], name: "index_account_settings_on_var", unique: true
   end
 
   create_table "account_stats", force: :cascade do |t|
@@ -35,11 +50,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_083000) do
   end
 
   create_table "accounts", force: :cascade do |t|
+    t.bigint "user_id"
     t.string "username"
     t.string "firstname"
     t.string "lastname"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "followers_count", default: 0
+    t.bigint "followings_count", default: 0
+    t.bigint "blocked_by_count", default: 0, null: false
+    t.bigint "blocking_others_count", default: 0, null: false
+    t.index ["user_id"], name: "index_accounts_on_user_id"
     t.index ["username"], name: "index_accounts_on_username", unique: true
   end
 
@@ -157,29 +178,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_083000) do
     t.index ["visit_token"], name: "index_ahoy_visits_on_visit_token", unique: true
   end
 
-  create_table "audits", force: :cascade do |t|
-    t.integer "auditable_id"
-    t.string "auditable_type"
-    t.integer "associated_id"
-    t.string "associated_type"
-    t.integer "user_id"
-    t.string "user_type"
-    t.string "username"
-    t.string "action"
-    t.text "audited_changes"
-    t.integer "version", default: 0
-    t.string "comment"
-    t.string "remote_address"
-    t.string "request_uuid"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["associated_type", "associated_id"], name: "associated_index"
-    t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
-    t.index ["created_at"], name: "index_audits_on_created_at"
-    t.index ["request_uuid"], name: "index_audits_on_request_uuid"
-    t.index ["user_id", "user_type"], name: "user_index"
-  end
-
   create_table "blazer_audits", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "query_id"
@@ -236,6 +234,21 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_083000) do
     t.index ["creator_id"], name: "index_blazer_queries_on_creator_id"
   end
 
+  create_table "bookmarks", force: :cascade do |t|
+    t.string "bookmarkable_type", null: false
+    t.bigint "bookmarkable_id", null: false
+    t.string "accountable_type", null: false
+    t.bigint "accountable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accountable_id", "accountable_type", "bookmarkable_id", "bookmarkable_type"], name: "idx_on_accountable_id_accountable_type_bookmarkable_b1439e43fb", unique: true
+    t.index ["accountable_id", "accountable_type"], name: "index_bookmarks_on_accountable_id_and_accountable_type"
+    t.index ["accountable_type", "accountable_id"], name: "index_bookmarks_on_accountable"
+    t.index ["bookmarkable_id", "bookmarkable_type"], name: "index_bookmarks_on_bookmarkable_id_and_bookmarkable_type"
+    t.index ["bookmarkable_type", "bookmarkable_id"], name: "index_bookmarks_on_bookmarkable"
+    t.index ["created_at"], name: "index_bookmarks_on_created_at"
+  end
+
   create_table "canonical_email_blocks", force: :cascade do |t|
     t.string "canonical_email_hash", default: "", null: false
     t.bigint "reference_account_id"
@@ -268,6 +281,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_083000) do
     t.index ["participant_type", "participant_id", "experiment"], name: "index_field_test_memberships_on_participant", unique: true
   end
 
+  create_table "follow_requests", force: :cascade do |t|
+    t.bigint "account_id"
+    t.bigint "target_account_id"
+    t.boolean "notify", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "target_account_id"], name: "index_follow_requests_on_account_id_and_target_account_id", unique: true
+    t.index ["account_id"], name: "index_follow_requests_on_account_id"
+    t.index ["target_account_id"], name: "index_follow_requests_on_target_account_id"
+  end
+
   create_table "follows", force: :cascade do |t|
     t.boolean "blocked", default: false, null: false
     t.string "follower_type", null: false
@@ -291,6 +315,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_083000) do
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "issues", force: :cascade do |t|
+    t.text "description"
+    t.integer "status", default: 0, null: false
+    t.bigint "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_issues_on_account_id"
+    t.index ["status"], name: "index_issues_on_status"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -461,6 +495,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_083000) do
     t.index ["delivered", "failed", "processing", "deliver_after", "created_at"], name: "index_rpush_notifications_multi", where: "((NOT delivered) AND (NOT failed))"
   end
 
+  create_table "settings", force: :cascade do |t|
+    t.string "var", null: false
+    t.text "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["var"], name: "index_settings_on_var", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -481,14 +523,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_083000) do
     t.datetime "locked_at"
     t.datetime "deleted_at"
     t.date "dob"
-    t.bigint "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "followers_count", default: 0
-    t.bigint "followings_count", default: 0
-    t.bigint "blocked_by_count", default: 0, null: false
-    t.bigint "blocking_others_count", default: 0, null: false
-    t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -516,6 +552,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_083000) do
   add_foreign_key "account_stats", "accounts"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "follow_requests", "accounts", column: "target_account_id"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"

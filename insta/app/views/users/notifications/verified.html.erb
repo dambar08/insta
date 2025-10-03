@@ -1,0 +1,14 @@
+<%= content_for :with_layout do %>
+  <%= render "layout" do %>
+    <%= turbo_stream_from :notifications %>
+    <div id="notifications">
+      <% if @notifications.size.positive? %>
+        <% @notifications.each do |notification| %>
+          <%= render notification %>
+        <% end %>
+      <% else %>
+        <%= render partial: "empty", locals: { description: t('views.users.notifications.verified.empty.description') } %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

@@ -7,6 +7,7 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+User.create(email: "u@mail.com", password: "password", confirmed_at: Time.current)
 users = []
 100.times do
   username = Faker::Name.unique.name.split(" ").join("_").downcase

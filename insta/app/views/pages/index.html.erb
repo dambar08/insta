@@ -1,0 +1,35 @@
+<div class="h-screen container mx-auto flex flex-col">
+  <div class="grid md:grid-cols-2 flex-1">
+    <div class="md:flex md:items-center md:justify-center">
+      <div class="text-7xl uppercase font-bold">Insta</div>
+    </div>
+    <div class="md:flex md:flex-col md:items-start md:justify-center space-y-5">
+      <div class='font-bold text-3xl'>Join today.</div>
+      <div class="max-w-xs w-full space-y-5">
+        <div class="space-y-3">
+          <div><%= link_to "Create an account", new_user_registration_path, class: "block text-black bg-white rounded-full border text-center px-3 py-1 font-medium" %></div>
+          <div class="text-xs">By signing up, you agree to the <%= link_to "Terms of Service", tos_pages_path %> and <%= link_to "Privacy Policy", privacy_pages_path, class: "text-blue-500" %>, including <%= link_to "Cookie Use", cookies_pages_path, class: "text-blue-500" %>.</div>
+        </div>
+        <div class="space-y-3">
+          <div class="font-bold">Already have an account?</div>
+          <div><%= link_to "Sign in", new_user_session_path, class: 'font-medium block rounded-full border text-center px-3 py-1' %></div>
+          <div class='font-medium rounded-full border text-center px-3 py-1'>Get the Insta app</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <nav class="mb-3">
+      <ul class="flex flex-row justify-center flex-wrap gap-2 divide-x text-xs md:text-sm">
+        <li class="text-center px-3"><%= link_to "About",about_pages_path, class: "text-nowrap" %></li>
+        <li  class="text-center px-3"><%= link_to "Terms of Service",tos_pages_path, class: "text-nowrap" %></li>
+        <li  class="text-center px-3"><%= link_to "Privacy Policy", privacy_pages_path, class: "text-nowrap" %></li>
+        <li  class="text-center px-3"><%= link_to "Cookie Policy", cookies_pages_path, class: "text-nowrap" %></li>
+        <li  class="text-center px-3"><%= link_to "Accessibility", accessibility_pages_path, class: "text-nowrap" %></li>
+        <li  class="text-center px-3">
+          <div class="text-nowrap">&copy; <%= Date.current.year %> Insta</div>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

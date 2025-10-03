@@ -1,5 +1,13 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: account_pins
+#
+#  id         :bigint           not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 class AccountPin < ApplicationRecord
   PINNABLE_TYPES = ["Account"].freeze
   belongs_to :pinnable, polymorphic: true
@@ -7,7 +15,6 @@ class AccountPin < ApplicationRecord
 
   validates :pinnable_id, uniqueness: { scope: [:account_id] }
   validates :pinnable_type, inclusion: { in: PINNABLE_TYPES }
-  validate :only_five_pins_per_account, on: :create
   validate :pinnable_belongs_to_account
 
   private

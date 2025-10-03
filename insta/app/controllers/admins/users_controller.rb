@@ -6,7 +6,7 @@ module Admins
 
     # GET /admins/users or /admins/users.json
     def index
-      @users = User.page(params[:page]).per(params[:per])
+      @pagy, @users = pagy(User.all)
     end
 
     # GET /admins/users/1 or /admins/users/1.json

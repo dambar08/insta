@@ -1,0 +1,2 @@
+module Internals::PingsHelper
+end

@@ -1,0 +1,11 @@
+<p style="color: green"><%= notice %></p>
+<% content_for :title, "Notifications" %>
+<h1 class="text-3xl font-bold">Notifications</h1>
+<div class="grid grid-cols-3">
+  <div><%= link_to t('views.user.notifications._layout.all'), users_notifications_path %></div>
+  <div><%= link_to t('views.user.notifications._layout.verified'), verified_users_notifications_path %></div>
+  <div><%= link_to t('views.user.notifications._layout.mentions'), mentions_users_notifications_path %></div>
+</div>
+<div>
+  <%= yield %>
+</div>

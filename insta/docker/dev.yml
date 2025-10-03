@@ -1,0 +1,149 @@
+name: insta
+
+x-app: &app
+  build:
+    target: development
+    context: ..
+  environment: &env
+    NODE_ENV: ${NODE_ENV:-development}
+    RAILS_ENV: ${RAILS_ENV:-development}
+
+x-backend: &backend
+  <<: *app
+  stdin_open: true
+  tty: true
+  volumes:
+    - bundle_cache:/usr/local/bundle
+    - rails_cache:/rails/tmp/cache
+    - assets:/rails/public/assets
+    - node_modules:/rails/node_modules
+  environment: &backend_environment
+    <<: *env
+    SIDEKIQ_URL: redis://redis:6379/
+    DATABASE_URL: postgres://insta:insta_password@db:5432/insta_development
+    DATABASE_NAME: insta_development
+    DATABASE_URL_TEST: postgres://postgres:postgres@testdb:5432/insta_test
+    DATABASE_NAME_TEST: insta_test
+    # MALLOC_ARENA_MAX: 2
+    # WEB_CONCURRENCY: ${WEB_CONCURRENCY:-1}
+    # BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
+    # YARN_CACHE_FOLDER: /app/node_modules/.yarn-cache
+    # HISTFILE: /usr/local/hist/.bash_history
+    # PSQL_HISTORY: /usr/local/hist/.psql_history
+    # IRB_HISTFILE: /usr/local/hist/.irb_history
+  depends_on:
+    db:
+      condition: service_healthy
+    testdb:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+
+services:
+  rails:
+    <<: *backend
+    stdin_open: true
+    tty: true
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: bash -c "bundle exec rails s -b 0.0.0.0 -p 3000"
+    ports:
+      - "3000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/up || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    volumes:
+      - bundle_cache:/usr/local/bundle
+      - rails_cache:/rails/tmp/cache
+      - assets:/rails/public/assets
+      - node_modules:/rails/node_modules
+  caddy:
+    image: caddy:latest
+    command: caddy reverse-proxy --from :80 --to rails:3000
+    restart: unless-stopped
+    environment:
+      - HOST=localhost
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+  sidekiq:
+    <<: *backend
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: bundle exec sidekiq
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  webpack:
+    <<: *app
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: build
+    command: yarn build --watch
+    volumes:
+      - ${LOCAL_WORKSPACE_FOLDER:-.}:/rails:cached
+      - bundle_cache:/usr/local/bundle
+      - node_modules:/rails/node_modules
+      - builds_cache:/rails/assets/builds
+    environment:
+      <<: *env
+    depends_on:
+      rails:
+        condition: service_healthy
+
+  css:
+    <<: *app
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: build
+    command: yarn build:css --watch
+    volumes:
+      - ${LOCAL_WORKSPACE_FOLDER:-.}:/rails:cached
+      - bundle_cache:/usr/local/bundle
+      - node_modules:/rails/node_modules
+      - builds_cache:/rails/assets/builds
+    environment:
+      <<: *env
+    depends_on:
+      rails:
+        condition: service_healthy
+
+  db:
+    extends:
+      file: services.yml
+      service: db
+
+  testdb:
+    extends:
+      file: services.yml
+      service: testdb
+
+  redis:
+    extends:
+      file: services.yml
+      service: redis
+
+volumes:
+  db_data:
+  testdb_data:
+  caddy_data:
+  caddy_config:
+  redis:
+  node_modules:
+  bundle_cache:
+  assets:
+  rails_cache:
+  builds_cache:

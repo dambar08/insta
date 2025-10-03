@@ -1,0 +1,3 @@
+http://localhost {
+    reverse_proxy rails:3000
+}

@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @bookmark %>
+
+<div>
+  <%= link_to "Edit this bookmark", edit_users_bookmark_path(@bookmark) %> |
+  <%= link_to "Back to bookmarks", users_bookmarks_path %>
+
+  <%= button_to "Destroy this bookmark", [:users, @bookmark], method: :delete %>
+</div>

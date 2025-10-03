@@ -1,0 +1,2 @@
+module Users::ApplicationHelper
+end

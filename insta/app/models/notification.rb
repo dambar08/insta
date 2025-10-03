@@ -26,7 +26,7 @@
 #
 class Notification < ApplicationRecord
   belongs_to :notifiable, polymorphic: true
-  belongs_to :user
+  belongs_to :account
 
   scope :read, -> { where.not(read: false) }
   scope :unread, -> { where(read_at: nil) }

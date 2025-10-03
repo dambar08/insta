@@ -5,8 +5,6 @@
 # Table name: users
 #
 #  id                     :bigint           not null, primary key
-#  blocked_by_count       :bigint           default(0), not null
-#  blocking_others_count  :bigint           default(0), not null
 #  confirmation_sent_at   :datetime
 #  confirmation_token     :string
 #  confirmed_at           :datetime
@@ -17,8 +15,6 @@
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  failed_attempts        :integer          default(0), not null
-#  followers_count        :bigint           default(0)
-#  followings_count       :bigint           default(0)
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :string
 #  locked_at              :datetime
@@ -30,11 +26,9 @@
 #  unlock_token           :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  account_id             :bigint
 #
 # Indexes
 #
-#  index_users_on_account_id            (account_id)
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
@@ -47,18 +41,27 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :confirmable, :lockable, :timeoutable, :trackable
 
-  belongs_to :account, inverse_of: :user
+  has_one :account, inverse_of: :user, dependent: :destroy
   has_many :ahoy_events, class_name: "Ahoy::Event", dependent: :delete_all
   has_many :ahoy_visits, class_name: "Ahoy::Visit", dependent: :delete_all
   has_many :access_grants, class_name: "Doorkeeper::AccessGrant", foreign_key: :resource_owner_id, dependent: :delete_all # or :destroy if you need callbacks
   has_many :access_tokens, class_name: "Doorkeeper::AccessToken", foreign_key: :resource_owner_id, dependent: :delete_all # or :destroy if you need callbacks
 
+  delegate :username, to: :account
   accepts_nested_attributes_for :account
+
+  after_create_commit :create_account, unless: -> { account.present? }
+  after_create_commit :send_welcome_notification
 
   # has_many :folowings, through: :follows
   def age
     return unless dob
 
     @age ||= ((Time.zone.now - dob.to_time) / 1.year.seconds).floor
+  end
+
+  private
+
+  def send_welcome_notification
   end
 end

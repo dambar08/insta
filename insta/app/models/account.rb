@@ -4,22 +4,28 @@
 #
 # Table name: accounts
 #
-#  id         :bigint           not null, primary key
-#  firstname  :string
-#  lastname   :string
-#  username   :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                    :bigint           not null, primary key
+#  blocked_by_count      :bigint           default(0), not null
+#  blocking_others_count :bigint           default(0), not null
+#  firstname             :string
+#  followers_count       :bigint           default(0)
+#  followings_count      :bigint           default(0)
+#  lastname              :string
+#  username              :string
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  user_id               :bigint
 #
 # Indexes
 #
+#  index_accounts_on_user_id   (user_id)
 #  index_accounts_on_username  (username) UNIQUE
 #
 class Account < ApplicationRecord
   include Followable
   include Follower
   include Accounts::Avatar
-  include Accounts::Counters
+  # include Accounts::Counters
 
   USERNAME_RE   = /[a-z0-9_]+([.-]+[a-z0-9_]+)*/i
   MENTION_RE    = %r{(?<![=/[:word:]])@((#{USERNAME_RE})(?:@[[:word:]]+([.-]+[[:word:]]+)*)?)}
@@ -29,8 +35,11 @@ class Account < ApplicationRecord
   DISPLAY_NAME_LENGTH_LIMIT = 30
   NOTE_LENGTH_LIMIT = 500
 
-  belongs_to :user, inverse_of: :account
+  has_one :setting
+  belongs_to :user, inverse_of: :account, dependent: :destroy
   has_many :account_pins, inverse_of: :account, dependent: :delete_all
+  has_many :notifications, inverse_of: :account, dependent: :delete_all
+  has_many :bookmarks, inverse_of: :accountable, dependent: :delete_all
   has_many :blocked_blocks,
     class_name: "AccountBlock",
     foreign_key: :blocked_id,
@@ -41,11 +50,13 @@ class Account < ApplicationRecord
     foreign_key: :blocker_id,
     inverse_of: :blocker,
     dependent: :delete_all
+  has_many :issues, inverse_of: :account, dependent: :destroy
 
   scope :recent, -> { reorder(id: :desc) }
   scope :with_username, ->(value) { where(arel_table[:username].lower.eq(value.to_s.downcase)) }
 
   validates :username, presence: true, length: { in: 2..30 }, uniqueness: true
+  validates :user_id, uniqueness: true
 
   before_validation :set_username
   after_create_commit :send_welcome_notification
