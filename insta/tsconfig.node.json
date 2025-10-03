@@ -1,0 +1,14 @@
+{
+  "references": [{ "path": "./tsconfig.base.json" }],
+  "compilerOptions": {
+    "composite": true,
+    "lib": ["ESNext"],
+    "module": "ESNext",
+    "types": ["node"],
+    "plugins": [],
+    "incremental": true,
+    "moduleResolution": "bundler",
+  },
+
+  "include": []
+}

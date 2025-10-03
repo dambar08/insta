@@ -1,0 +1,15 @@
+{
+  "references": [{ "path": "./tsconfig.base.json" }],
+  "compilerOptions": {
+    "composite": true,
+    "lib": ["DOM", "dom.iterable", "WebWorker", "ESNext"],
+    "types": [],
+    "module": "ESNext",
+    "jsx": "preserve",
+    "plugins": [],
+    "incremental": true,
+    "moduleResolution": "bundler",
+  },
+  "exclude": ["node_modules"],
+  "include": ["app/javascript/**/*.{js|ts|jsx|tsx}"]
+}
