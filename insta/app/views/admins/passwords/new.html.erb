@@ -1,16 +1,28 @@
-<h2>Forgot your password?</h2>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "admins/shared/error_messages", resource: resource %>
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
+    <div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Forgot your password?
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Enter your email below and we will send you instructions to reset your password.
+      </p>
+    </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <div class="rounded-md shadow-sm -space-y-px">
+        <div>
+          <%= f.label :email, class: "sr-only" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true, placeholder: "Email", class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-black focus:border-black sm:text-sm" %>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <%= f.submit "Send Reset Instructions", class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black" %>
+      </div>
+    <% end %>
+
+    <%= render "admins/shared/links" %>
   </div>
-
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions", class: "w-full py-2 px-4 bg-black text-white font-semibold rounded-full shadow-md hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black" %>
-  </div>
-<% end %>
-
-<%= render "admins/shared/links" %>
+</div>

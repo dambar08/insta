@@ -4,7 +4,7 @@
 #
 #  id          :bigint           not null, primary key
 #  description :text
-#  status      :integer          default("new"), not null
+#  status      :integer          default("new_issue"), not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  account_id  :bigint

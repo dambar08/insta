@@ -21,6 +21,9 @@
 #  index_follows_on_followable_and_follower  (followable_id,followable_type,follower_id,follower_type) UNIQUE
 #
 class Follow < ApplicationRecord
+  extend ActsAsFollower::FollowerLib
+  extend ActsAsFollower::FollowScopes
+
   FOLLOWABLE_TYPES = ["Account"].freeze
   FOLLOWER_TYPES = ["Account"].freeze
 
@@ -28,43 +31,9 @@ class Follow < ApplicationRecord
   belongs_to :followable, polymorphic: true
   belongs_to :follower, polymorphic: true
 
-  validates :follower_id, :follower_type, uniqueness: { scope: [:followable_id, :followable_type] }
+  validates :follower_id, uniqueness: { scope: [:followable_id, :followable_type, :follower_type] }
   validates :follower_id, presence: true, if: :follower_type
   validates :followable_id, presence: true, if: :followable_type
   validates :follower_type, inclusion: { in: FOLLOWER_TYPES }, if: :follower_id
   validates :followable_type, inclusion: { in: FOLLOWABLE_TYPES }, if: :followable_id
-
-  class << self
-    def for_follower(follower)
-      where(follower_id: follower.id, follower_type: parent_class_name(follower))
-    end
-
-    def for_followable(followable)
-      where(followable_id: followable.id, followable_type: parent_class_name(followable))
-    end
-
-    def for_follower_type(follower_type)
-      where(follower_type: follower_type)
-    end
-
-    def for_followable_type(followable_type)
-      where(followable_type: followable_type)
-    end
-
-    def recent(from)
-      where(["created_at > ?", (from || 2.weeks.ago).to_s(:db)])
-    end
-
-    def descending
-      order("follows.created_at DESC")
-    end
-
-    def unblocked
-      where(blocked: false)
-    end
-
-    def blocked
-      where(blocked: true)
-    end
-  end
 end

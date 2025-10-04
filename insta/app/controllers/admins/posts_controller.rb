@@ -1,2 +1,2 @@
-class Admins::PostsController < ApplicationController
+class Admins::PostsController < Admins::ApplicationController
 end

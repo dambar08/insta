@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_03_065809) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_04_022555) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -176,6 +176,15 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_03_065809) do
     t.datetime "started_at"
     t.index ["user_id"], name: "index_ahoy_visits_on_user_id"
     t.index ["visit_token"], name: "index_ahoy_visits_on_visit_token", unique: true
+  end
+
+  create_table "assets", force: :cascade do |t|
+    t.string "viewable_type"
+    t.bigint "viewable_id"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["viewable_type", "viewable_id"], name: "index_assets_on_viewable"
   end
 
   create_table "blazer_audits", force: :cascade do |t|
@@ -405,6 +414,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_03_065809) do
     t.string "caption", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.boolean "allow_comment", default: true, null: false
+    t.index ["account_id"], name: "index_posts_on_account_id"
   end
 
   create_table "resources", force: :cascade do |t|
@@ -557,4 +569,5 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_03_065809) do
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
+  add_foreign_key "posts", "accounts"
 end

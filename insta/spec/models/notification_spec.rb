@@ -25,5 +25,36 @@
 require 'rails_helper'
 
 RSpec.describe Notification, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:account) { create(:account) }
+  let(:follow) { create(:follow) }
+
+  describe "associations" do
+    it { is_expected.to belong_to(:account) }
+    it { is_expected.to belong_to(:notifiable) }
+    it { is_expected.to belong_to(:follow).optional }
+    it { is_expected.to belong_to(:follow_request).optional }
+    it { is_expected.to belong_to(:favourite).optional }
+  end
+
+  # describe "scopes" do
+  #   let!(:read_notification) { create(:notification, account: account, read: true) }
+  #   let!(:unread_notification) { create(:notification, account: account, read: false, read_at: nil) }
+
+  #   it "returns read notifications" do
+  #     expect(described_class.read).to include(read_notification)
+  #     expect(described_class.read).not_to include(unread_notification)
+  #   end
+
+  #   it "returns unread notifications" do
+  #     expect(described_class.unread).to include(unread_notification)
+  #     expect(described_class.unread).not_to include(read_notification)
+  #   end
+  # end
+
+  # describe "callbacks" do
+  #   it "sets marked_at before create" do
+  #     notification = described_class.create!(account: account, notifiable: follow)
+  #     expect(notification.marked_at).not_to be_nil
+  #   end
+  # end
 end

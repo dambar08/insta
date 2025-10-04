@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Admins
-  class UsersController < ManagementController
+  class UsersController < ApplicationController
     before_action :set_admins_user, only: [:show, :edit, :update, :destroy]
 
     # GET /admins/users or /admins/users.json

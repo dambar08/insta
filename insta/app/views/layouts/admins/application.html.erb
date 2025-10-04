@@ -1,0 +1,14 @@
+<%= render "layouts/shared/htmldoc" do %>
+  <!-- app/views/admin/dashboard/index.html.erb -->
+  <div class="flex min-h-screen bg-gray-50">
+    <!-- Sidebar -->
+    <%= content_for(:sidebar) ? yield(:sidebar) : render partial: "sidebar" %>
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col">
+      <!-- Topbar -->
+      <%= content_for(:topbar) ? yield(:topbar) : render partial: "topbar" %>
+      <!-- Content -->
+      <%= yield %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,11 @@
+<aside class="w-64 bg-white border-r hidden md:block">
+  <div class="p-6">
+    <h1 class="text-xl font-bold text-indigo-600">Admin</h1>
+  </div>
+  <nav class="mt-6 space-y-2">
+    <%= link_to "Dashboard", admin_dashboard_path, class: "flex items-center px-6 py-3 text-gray-700 hover:bg-gray-100 rounded-lg" %>
+    <%= link_to "Users", admin_users_path, class: "flex items-center px-6 py-3 text-gray-700 hover:bg-gray-100 rounded-lg" %>
+    <%= link_to "Reports", admin_reports_path, class: "flex items-center px-6 py-3 text-gray-700 hover:bg-gray-100 rounded-lg" %>
+    <%= link_to "Settings", admin_settings_path, class: "flex items-center px-6 py-3 text-gray-700 hover:bg-gray-100 rounded-lg" %>
+  </nav>
+</aside>

@@ -1,0 +1,15 @@
+<main class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <!-- Card Example -->
+  <div class="bg-white p-6 rounded-2xl shadow-sm">
+    <h3 class="text-sm font-medium text-gray-500">Total Users</h3>
+    <p class="mt-2 text-3xl font-bold text-indigo-600"><%= User.count %></p>
+  </div>
+  <div class="bg-white p-6 rounded-2xl shadow-sm">
+    <h3 class="text-sm font-medium text-gray-500">Active Posts</h3>
+    <p class="mt-2 text-3xl font-bold text-indigo-600"><%= Post.active.count %></p>
+  </div>
+  <div class="bg-white p-6 rounded-2xl shadow-sm">
+    <h3 class="text-sm font-medium text-gray-500">Reports Pending</h3>
+    <p class="mt-2 text-3xl font-bold text-indigo-600"><%= Report.pending.count %></p>
+  </div>
+</main>

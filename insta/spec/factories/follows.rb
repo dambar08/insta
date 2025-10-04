@@ -22,5 +22,8 @@
 #
 FactoryBot.define do
   factory :follow do
+    association :followable, factory: :account
+    association :follower, factory: :account
+    blocked { false }
   end
 end

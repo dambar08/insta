@@ -28,7 +28,7 @@ class Notification < ApplicationRecord
   belongs_to :notifiable, polymorphic: true
   belongs_to :account
 
-  scope :read, -> { where.not(read: false) }
+  scope :read, -> { where(read: true) }
   scope :unread, -> { where(read_at: nil) }
 
   with_options foreign_key: "notifiable_id", optional: true do
@@ -37,11 +37,11 @@ class Notification < ApplicationRecord
     belongs_to :favourite, inverse_of: :notification
   end
 
-  before_create :mark_notified_at_time
+  before_create :set_notified_at
 
   private
 
-  def mark_notified_at_time
-    self.mark_notified_at_time = mark_notified_at_time || Time.current
+  def set_notified_at
+    self.notified_at ||= Time.current
   end
 end

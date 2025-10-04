@@ -34,13 +34,21 @@ Rails.application.routes.draw do
     end
     resources :reels, only: [:index, :show]
     resources :bookmarks
+    resources :settings do
+    end
+    resource :account do
+      collection do
+        get :blocked_accounts
+        get :close_friends
+      end
+    end
     resources :notifications, only: [:index, :show] do
       collection do
         get :mentions
         get :verified
       end
     end
-    get "@:username", to: "users#show"
+    get "@:username", to: "accounts#show"
   end
   resources :users, except: [:show] do
     collection do
@@ -59,4 +67,9 @@ Rails.application.routes.draw do
   # mount Rswag::Ui::Engine => "/api-docs"
   get "@:username", to: "users#show"
   draw(:api)
+
+  unless Rails.env.production?
+    get "/rails/mailers", to: "rails/mailers#index"
+    get "/rails/mailers/*path", to: "rails/mailers#preview"
+  end
 end

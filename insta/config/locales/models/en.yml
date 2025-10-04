@@ -1,6 +1,7 @@
 
 en:
   models:
+    asset:
     user:
       follow_limit_reached: You cannot follow more than %{limit} people
     account_block:

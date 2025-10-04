@@ -17,10 +17,9 @@ users = []
 end
 
 Parallel.map(users, in_threads: 8) do |user|
-  account = user[:account]
+  user[:account]
   rest = user.reject { |k, _| k == :account }
-  user = User.create!(rest)
-  user.account.create(account)
+  User.create!(rest)
 end
 
 users = []
@@ -35,14 +34,17 @@ Parallel.map(users, in_threads: 8) do |user|
   User.create!(user)
 end
 
-Parallel.map((0..1000), in_threads: 4) do |user|
+Parallel.map((0..1000), in_threads: 8) do |_user|
+  User.create!(email: Faker::Internet.unique.email, password: "password", confirmed_at: Time.current)
+end
+
+Parallel.map((0..1000), in_threads: 4) do |_|
   MIN_FOLLOWING_COUNT = 0
   MAX_FOLLOWING_COUNT = 100
   follows = []
-  user = User.all.sample
   following_count = rand(MIN_FOLLOWING_COUNT..MAX_FOLLOWING_COUNT)
-  User.all.sample(following_count).pluck(:id).lazy.each do |id|
-    follows << { follower_id: user.id, following_id: id }
+  Account.all.sample(following_count).pluck(:id).lazy.each do |id|
+    follows << { follower: Account.all.sample, followable: Account.find(id) }
   end
   Follow.insert_all(follows) if follows.size.positive?
 end
