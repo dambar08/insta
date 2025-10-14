@@ -21,7 +21,6 @@ jobs:
 
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
-        working-directory: insta
 
   scan_js:
     runs-on: ubuntu-latest
@@ -38,7 +37,6 @@ jobs:
 
       - name: Scan for security vulnerabilities in JavaScript dependencies
         run: yarn audit
-        working-directory: insta
 
   lint:
     runs-on: ubuntu-latest
@@ -54,7 +52,6 @@ jobs:
 
       - name: Lint code for consistent style
         run: bin/rubocop -f github
-        working-directory: insta
 
   test:
     runs-on: ubuntu-latest
@@ -68,7 +65,6 @@ jobs:
     steps:
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git pkg-config google-chrome-stable
-        working-directory: insta
 
       - name: Checkout code
         uses: actions/checkout@v5
@@ -84,7 +80,6 @@ jobs:
           RAILS_ENV: test
           REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare && bundle exec rspec
-        working-directory: insta
 
 
       - name: Keep screenshots from failed system tests
