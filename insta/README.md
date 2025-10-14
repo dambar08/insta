@@ -6,7 +6,7 @@
 [![Redis](https://img.shields.io/badge/Redis-6-orange)](https://redis.io/)
 [![Sidekiq](https://img.shields.io/badge/Sidekiq-7.1-purple)](https://sidekiq.org/)
 [![RSpec](https://img.shields.io/badge/RSpec-6.0-red)](https://rspec.info/)
-[![Build Status](https://github.com/USERNAME/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/USERNAME/REPO/actions/workflows/ci.yml)
+[![Build Status](https://github.com/dambar08/insta/actions/workflows/ci.yml/badge.svg)](https://github.com/dambar08/insta/actions/workflows/ci.yml)
 [![Coverage](https://img.shields.io/badge/Coverage-95%25-brightgreen)](coverage/index.html)
 
 ## Overview
