@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "users/bookmarks/new", type: :view do
-  before(:each) do
-    assign(:bookmark, Bookmark.new())
+  before do
+    assign(:bookmark, Bookmark.new)
   end
 
   it "renders new users_bookmark form" do

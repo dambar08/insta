@@ -18,7 +18,6 @@ RSpec.describe Users::BookmarksController, type: :routing do
       expect(get: "/users/bookmarks/1/edit").to route_to("users/bookmarks#edit", id: "1")
     end
 
-
     it "routes to #create" do
       expect(post: "/users/bookmarks").to route_to("users/bookmarks#create")
     end

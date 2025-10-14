@@ -3,15 +3,33 @@
   <head>
     <title>Insta</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="turbo-refresh-scroll" content="preserve">
+    <meta name="turbo-root">
+    <meta name="view-transition" content="same-origin">
+    <meta name="turbo-refresh-method" content="morph">
+    <meta name="last-updated" content="<%= DateTime.current %>">
+    <meta name="environment" content="<%= Rails.env %>">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%#= stylesheet_link_tag "application", "data-turbo-track": Rails.env.production? ? "reload" : "" %>
-    <%#= javascript_include_tag "application", "data-turbo-track": Rails.env.production? ? "reload" : "", defer: true %>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/icon.png">
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": Rails.env.production? ? "reload" : "" %>
+    <%= javascript_include_tag "application", "data-turbo-track": Rails.env.production? ? "reload" : "", defer: true %>
+    <%#= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%#= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= yield :head %>
   </head>
-  <body class="antialised">
+  <body class="antialised font-roboto">
     <%= render partial: "layouts/shared/notification" %>
     <%= yield %>
   </body>

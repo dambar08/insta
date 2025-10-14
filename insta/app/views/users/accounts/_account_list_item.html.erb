@@ -1,0 +1,11 @@
+<%# locals: (account:) %>
+<div class="flex flex-row items-center justify-between">
+  <div class="flex flex-row items-center justify-between">
+    <div class="h-6 w-6 rounded-full bg-black"></div>
+    <div>
+      <div><%= account.fullname %></div>
+      <div class="text-neutral-500 text-xs">@<%= account.username %></div>
+    </div>
+  </div>
+  <div class="rounded-full bg-black text-white px-3 p-2 text-xs">Following</div>
+</div>

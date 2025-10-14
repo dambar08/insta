@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "users/notifications/edit", type: :view do
-  let(:notification) {
-    Notification.create!()
-  }
+  let(:notification) do
+    Notification.create!
+  end
 
-  before(:each) do
+  before do
     assign(:notification, notification)
   end
 

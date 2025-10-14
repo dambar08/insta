@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Verification requests" %>
+
+<h1>Verification requests</h1>
+
+<div id="verification_requests">
+  <% @verification_requests.each do |verification_request| %>
+    <%= render verification_request %>
+    <p>
+      <%= link_to "Show this verification request", [:admins, verification_request] %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New verification request", new_admins_verification_request_path %>

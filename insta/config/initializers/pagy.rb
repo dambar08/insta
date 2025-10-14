@@ -55,7 +55,7 @@
 
 # Countless extra: Paginate without any count, saving one query per rendering
 # See https://ddnexus.github.io/pagy/docs/extras/countless
-# require 'pagy/extras/countless'
+require 'pagy/extras/countless'
 # Pagy::DEFAULT[:countless_minimal] = false   # default (eager loading)
 
 # Elasticsearch Rails extra: Paginate `ElasticsearchRails::Results` objects
@@ -120,7 +120,7 @@ require "pagy/extras/metadata"
 # Pagy extra: Add the pagy styled versions of the javascript-powered navs
 # and a few other components to the Pagy::Frontend module.
 # See https://ddnexus.github.io/pagy/docs/extras/pagy
-# require 'pagy/extras/pagy'
+require 'pagy/extras/pagy'
 
 # Multi size var used by the *_nav_js helpers
 # See https://ddnexus.github.io/pagy/docs/extras/pagy#steps
@@ -172,7 +172,7 @@ require "pagy/extras/metadata"
 
 # With the asset pipeline
 # Sprockets need to look into the pagy javascripts dir, so add it to the assets paths
-# Rails.application.config.assets.paths << Pagy.root.join('javascripts')
+Rails.application.config.assets.paths << Pagy.root.join('javascripts')
 
 # I18n
 
@@ -183,7 +183,7 @@ require "pagy/extras/metadata"
 #
 # Examples:
 # load the "de" built-in locale:
-# Pagy::I18n.load(locale: 'de')
+Pagy::I18n.load(locale: 'en')
 #
 # load the "de" locale defined in the custom file at :filepath:
 # Pagy::I18n.load(locale: 'de', filepath: 'path/to/pagy-de.yml')

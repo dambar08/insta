@@ -1,14 +1,14 @@
 <div class="flex flex-row items-center justify-evenly">
   <div class="flex flex-col items-center justify-center">
-    <div><%= current_account.followers_count %></div>
-    <div>Followers</div>
+    <div><%= current_account.follow_count %></div>
+    <div><%= link_to "Followers", followers_users_account_path %></div>
   </div>
   <div>
     <div>Profile</div>
   </div>
   <div class="flex flex-col items-center justify-center">
-    <div><%= current_account.followings_count %></div>
-    <div>Following</div>
+    <div><%= current_account.following_accounts_count %></div>
+    <div><%= link_to "Followings", followings_users_account_path %></div>
   </div>
 </div>
 <div>

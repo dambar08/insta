@@ -21,7 +21,7 @@ module ApplicationCable
     end
 
     def connect
-      current_user || reject_unauthorized_connection
+      # current_user || reject_unauthorized_connection
     end
   end
 end

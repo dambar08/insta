@@ -1,0 +1,6 @@
+<%= turbo_stream.append "followings", partial: "account_list_item", collection: @followings, as: :account %>
+<% unless @pagy.page >= @pagy.pages %>
+  <%= turbo_stream.replace "load_more", partial: "load_more", locals: { id: "load_more", url: followings_users_account_path(page: @pagy.page + 1) } %>
+<% else %>
+  <%= turbo_stream.remove "load_more" %>
+<% end %>

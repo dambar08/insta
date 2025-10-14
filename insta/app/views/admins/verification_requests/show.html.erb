@@ -1,0 +1,8 @@
+<%= render @verification_request %>
+
+<div>
+  <%= link_to "Edit this verification request", edit_admins_verification_request_path(@verification_request) %> |
+  <%= link_to "Back to verification requests", admins_verification_requests_path %>
+
+  <%= button_to "Destroy this verification request", [:admins, @verification_request], method: :delete %>
+</div>

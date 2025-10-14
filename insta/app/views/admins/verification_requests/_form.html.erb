@@ -1,0 +1,17 @@
+<%= form_with(model: [:admins, verification_request]) do |form| %>
+  <% if verification_request.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(verification_request.errors.count, "error") %> prohibited this verification_request from being saved:</h2>
+
+      <ul>
+        <% verification_request.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

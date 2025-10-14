@@ -13,4 +13,20 @@ class Users::AccountsController < Users::ApplicationController
   def bookmarks
     @pagy, @bookmarks = pagy(current_account.bookmarks)
   end
+
+  def followers
+    @pagy, @followers = pagy(current_account.follower_accounts)
+    respond_to do |format|
+      format.turbo_stream
+      format.html
+    end
+  end
+
+  def followings
+    @pagy, @followings = pagy(current_account.following_accounts)
+    respond_to do |format|
+      format.turbo_stream
+      format.html
+    end
+  end
 end

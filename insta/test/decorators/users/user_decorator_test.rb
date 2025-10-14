@@ -1,4 +1,6 @@
 require 'test_helper'
 
-class Users::UserDecoratorTest < Draper::TestCase
+module Users
+  class UserDecoratorTest < Draper::TestCase
+  end
 end

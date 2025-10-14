@@ -7,22 +7,25 @@ require:
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
+  - rubocop-rspec_rails
   - rubocop-capybara
   - rubocop-factory_bot
+  - rubocop-graphql
   - rubocop-rake
   - rubocop-thread_safety
 
 AllCops:
   TargetRubyVersion: 3.2
   DisplayStyleGuide: true
-  DisableDefaultCops: false
   ExtraDetails: true
   UseCache: true
+  DisabledByDefault: false
   # CacheRootDirectory: "tmp/.cache/rubocop_cache/"
   # CacheRootDirectory: "tmp"
   MaxFilesInCache: 5
   NewCops: enable # opt-in to new cops by default
   ActiveSupportExtensionsEnabled: true
+  SuggestExtensions: true
   # DocumentationBaseURL: https://docs.rubocop.org/rubocop
 
   Exclude:

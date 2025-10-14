@@ -10,16 +10,21 @@
 #  firstname             :string
 #  followers_count       :bigint           default(0)
 #  followings_count      :bigint           default(0)
+#  last_post_at          :datetime
 #  lastname              :string
+#  posts_count           :integer          default(0), not null
 #  username              :string
+#  verified              :boolean          default(FALSE), not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  user_id               :bigint
 #
 # Indexes
 #
-#  index_accounts_on_user_id   (user_id)
-#  index_accounts_on_username  (username) UNIQUE
+#  index_accounts_on_last_post_at_and_id  (last_post_at DESC,id) WHERE (last_post_at IS NOT NULL)
+#  index_accounts_on_user_id              (user_id)
+#  index_accounts_on_username             (username) UNIQUE
+#  index_accounts_on_verified             (verified)
 #
 FactoryBot.define do
   factory :account do

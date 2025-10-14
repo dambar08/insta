@@ -2,6 +2,6 @@
   <h2 class="text-lg font-semibold">Dashboard</h2>
   <div class="flex items-center space-x-4">
     <span class="text-sm text-gray-600">Welcome, Admin</span>
-    <%= link_to "Logout", destroy_admin_session_path, method: :delete, class: "text-sm text-red-500" %>
+    <%= link_to "Logout", destroy_admin_session_path, data: { turbo_method: :delete }, class: "text-sm text-red-500" %>
   </div>
 </header>

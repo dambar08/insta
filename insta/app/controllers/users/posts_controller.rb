@@ -16,4 +16,10 @@ class Users::PostsController < Users::ApplicationController
 
   def destroy
   end
+
+  def like
+  end
+
+  def search
+  end
 end

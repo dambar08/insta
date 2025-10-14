@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "users/bookmarks/edit", type: :view do
-  let(:bookmark) {
-    Bookmark.create!()
-  }
+  let(:bookmark) do
+    Bookmark.create!
+  end
 
-  before(:each) do
+  before do
     assign(:bookmark, bookmark)
   end
 

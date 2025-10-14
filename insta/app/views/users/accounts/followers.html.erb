@@ -1,0 +1,20 @@
+<div class="flex flex-row items-center justify-evenly">
+  <div><%= link_to "Followers", followers_users_account_path %></div>
+  <div><%= link_to "Followings", followings_users_account_path %></div>
+</div>
+<div>
+  <%= turbo_frame_tag "frame_followers" do %>
+    <div id="followers" class="space-y-3">
+      <% if @followers.any? %>
+        <% @followers.each do |follower| %>
+          <%= render partial: "account_list_item", locals: { account: follower } %>
+        <% end %>
+      <% else %>
+        <%= render partial: "empty", locals: { title: t('views.users.acounts.followers._empty.title'), description: t('views.users.acounts.followers._empty.description') } %>
+      <% end %>
+    </div>
+    <% unless @pagy.page >= @pagy.pages %>
+      <%= render partial: "load_more", locals: { id: "load_more", url: followers_users_account_path(page: @pagy.page + 1) } %>
+    <% end %>
+  <% end %>
+</div>

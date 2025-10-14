@@ -20,10 +20,13 @@
 #  fk_rails_...  (account_id => accounts.id)
 #
 class Post < ApplicationRecord
-  belongs_to :account, inverse_of: :post
+  belongs_to :account, inverse_of: :posts
   has_many :assets, as: :viewable, dependent: :destroy
   has_many :comments, as: :commentable, inverse_of: :commentable, dependent: :nullify
 
+  validates :allow_comment, presence: true
+
+  counter_culture :account
   def allow_comments?
     !!allow_comment
   end

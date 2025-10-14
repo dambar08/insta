@@ -19,14 +19,14 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html { render(file: Rails.public_path.join("404"), layout: false, status: :not_found) }
       format.json { head(:not_found) }
-      format.js { render(js: "alert('Resource not founded. (404)');", status: :not_found) }
+      format.js { render(js: "alert('Resource not found. (404)');", status: :not_found) }
     end
   end
 
   def after_sign_in_path_for(resource)
     if resource.is_a?(User)
       users_app_root_path
-    else
+    elsif resource.is_a?(Admin)
       admins_admin_root_path
     end
   end

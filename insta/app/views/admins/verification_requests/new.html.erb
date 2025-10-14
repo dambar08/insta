@@ -1,0 +1,11 @@
+<% content_for :title, "New verification request" %>
+
+<h1>New verification request</h1>
+
+<%= render "form", verification_request: @verification_request %>
+
+<br>
+
+<div>
+  <%= link_to "Back to verification requests", admins_verification_requests_path %>
+</div>

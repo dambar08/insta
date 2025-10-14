@@ -8,6 +8,7 @@ en:
         notifications: Notifications
         messages: Messages
         profile: Profile
+        post: Post
   views:
     users:
       acccounts:

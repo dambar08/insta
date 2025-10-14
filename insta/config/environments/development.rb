@@ -5,7 +5,7 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   config.after_initialize do
     Bullet.enable        = true
-    Bullet.alert         = true
+    Bullet.alert         = false
     Bullet.bullet_logger = true
     Bullet.console       = true
     Bullet.rails_logger  = true
@@ -89,4 +89,6 @@ Rails.application.configure do
   # ActiveSupport::FileUpdateChecker). If you have a large number of assets, you
   # can improve performance by using the listen gem
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  config.hotwire_livereload.reload_method = :turbo_stream
 end

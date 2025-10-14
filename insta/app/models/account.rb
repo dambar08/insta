@@ -10,20 +10,24 @@
 #  firstname             :string
 #  followers_count       :bigint           default(0)
 #  followings_count      :bigint           default(0)
+#  last_post_at          :datetime
 #  lastname              :string
+#  posts_count           :integer          default(0), not null
 #  username              :string
+#  verified              :boolean          default(FALSE), not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  user_id               :bigint
 #
 # Indexes
 #
-#  index_accounts_on_user_id   (user_id)
-#  index_accounts_on_username  (username) UNIQUE
+#  index_accounts_on_last_post_at_and_id  (last_post_at DESC,id) WHERE (last_post_at IS NOT NULL)
+#  index_accounts_on_user_id              (user_id)
+#  index_accounts_on_username             (username) UNIQUE
+#  index_accounts_on_verified             (verified)
 #
 class Account < ApplicationRecord
   include Accounts::Avatar
-  # include Accounts::Counters
 
   acts_as_followable
   acts_as_follower
@@ -38,7 +42,7 @@ class Account < ApplicationRecord
 
   has_one :setting, dependent: :destroy
   belongs_to :user, inverse_of: :account, dependent: :destroy
-  has_many :posts, inverse_of: :acount, dependent: :destroy
+  has_many :posts, inverse_of: :account, dependent: :destroy
   has_many :account_pins, inverse_of: :account, dependent: :delete_all
   has_many :notifications, inverse_of: :account, dependent: :delete_all
   has_many :bookmarks, inverse_of: :accountable, dependent: :delete_all
@@ -52,19 +56,32 @@ class Account < ApplicationRecord
     foreign_key: :blocker_id,
     inverse_of: :blocker,
     dependent: :delete_all
+
   has_many :issues, inverse_of: :account, dependent: :destroy
+  has_many :verification_requests, inverse_of: :account, dependent: :destroy
+  has_many :assets, as: :viewable, inverse_of: :viewable, dependent: :destroy
+
+  delegate :email, to: :user
 
   scope :recent, -> { reorder(id: :desc) }
   scope :with_username, ->(value) { where(arel_table[:username].lower.eq(value.to_s.downcase)) }
 
   validates :username, presence: true, length: { in: 2..30 }, uniqueness: true
   validates :user_id, uniqueness: true
+  validates :followers_count, presence: true
+  validates :followings_count, presence: true
+  validates :blocked_by_count, presence: true
+  validates :blocking_others_count, presence: true
 
   before_validation :set_username
   after_create_commit :send_welcome_notification
 
   def send_welcome_notification
     # TODO
+  end
+
+  def fullname
+    [firstname, lastname].compact.join(" ")
   end
 
   def set_username
@@ -78,125 +95,11 @@ class Account < ApplicationRecord
     end
   end
 
-  # def followers_count
-  #   followings.unblocked.count
-  # end
+  def following_accounts
+    following_by_type(self.class.name)
+  end
 
-  # def blocked_followers_count
-  #   followings.blocked.count
-  # end
-
-  # # Returns the followings records scoped
-  # def followers_scoped
-  #   followings.includes(:follower)
-  # end
-
-  # def followers(options = {})
-  #   followers_scope = followers_scoped.unblocked
-  #   followers_scope = apply_options_to_scope(followers_scope, options)
-  #   followers_scope.to_a.collect { |f| f.follower }
-  # end
-
-  # def blocks(options = {})
-  #   blocked_followers_scope = followers_scoped.blocked
-  #   blocked_followers_scope = apply_options_to_scope(blocked_followers_scope, options)
-  #   blocked_followers_scope.to_a.collect { |f| f.follower }
-  # end
-
-  # def followed_by?(follower)
-  #   followings.unblocked.for_follower(follower).first.present?
-  # end
-
-  # def block(follower)
-  #   get_follow_for(follower) ? block_existing_follow(follower) : block_future_follow(follower)
-  # end
-
-  # def unblock(follower)
-  #   get_follow_for(follower).try(:delete)
-  # end
-
-  # def get_follow_for(follower)
-  #   followings.for_follower(follower).first
-  # end
-
-  # def block_future_follow(follower)
-  #   Follow.create(followable: self, follower: follower, blocked: true)
-  # end
-
-  # def block_existing_follow(follower)
-  #   get_follow_for(follower).block!
-  # end
-
-  # def following?(followable)
-  #   0 < Follow.unblocked.for_follower(self).for_followable(followable).count
-  # end
-
-  # # Returns the number of objects this instance is following.
-  # def follow_count
-  #   Follow.unblocked.for_follower(self).count
-  # end
-
-  # # Creates a new follow record for this instance to follow the passed object.
-  # # Does not allow duplicate records to be created.
-  # def follow(followable)
-  #   if self != followable
-  #     params = { followable_id: followable.id, followable_type: parent_class_name(followable) }
-  #     follows.create_or_find_by!(params)
-  #   end
-  # end
-
-  # # Deletes the follow record if it exists.
-  # def stop_following(followable)
-  #   if follow = get_follow(followable)
-  #     follow.destroy
-  #   end
-  # end
-
-  # # returns the follows records to the current instance
-  # def follows_scoped
-  #   follows.unblocked.includes(:followable)
-  # end
-
-  # # Returns the follow records related to this instance by type.
-  # def follows_by_type(followable_type, options = {})
-  #   follows_scope = follows_scoped.for_followable_type(followable_type)
-  #   apply_options_to_scope(follows_scope, options)
-  # end
-
-  # # Returns the follow records related to this instance with the followable included.
-  # def all_follows(options = {})
-  #   follows_scope = follows_scoped
-  #   apply_options_to_scope(follows_scope, options)
-  # end
-
-  # # Returns the actual records which this instance is following.
-  # def all_following(options = {})
-  #   all_follows(options).collect { |f| f.followable }
-  # end
-
-  # # Returns the actual records of a particular type which this record is following.
-  # def following_by_type(followable_type, options = {})
-  #   followables = followable_type.constantize
-  #     .joins(:followings)
-  #     .where("follows.blocked" => false,
-  #       "follows.follower_id"     => id,
-  #       "follows.follower_type"   => parent_class_name(self),
-  #       "follows.followable_type" => followable_type)
-  #   if options.has_key?(:limit)
-  #     followables = followables.limit(options[:limit])
-  #   end
-  #   if options.has_key?(:includes)
-  #     followables = followables.includes(options[:includes])
-  #   end
-  #   followables
-  # end
-
-  # def following_by_type_count(followable_type)
-  #   follows.unblocked.for_followable_type(followable_type).count
-  # end
-
-  # # Returns a follow record for the current instance and followable object.
-  # def get_follow(followable)
-  #   follows.unblocked.for_followable(followable).first
-  # end
+  def follower_accounts
+    followers_by_type(self.class.name)
+  end
 end

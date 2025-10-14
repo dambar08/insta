@@ -18,7 +18,6 @@ RSpec.describe Users::NotificationsController, type: :routing do
       expect(get: "/users/notifications/1/edit").to route_to("users/notifications#edit", id: "1")
     end
 
-
     it "routes to #create" do
       expect(post: "/users/notifications").to route_to("users/notifications#create")
     end

@@ -30,4 +30,8 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  mailer:
+    adjust: Adjust your email settings
+    adjust_only_html: Don't want to get emails like this? Adjust your email settings at %{path}
+    unsubscribe: Unsubscribe
   hello: "Hello world"

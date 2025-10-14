@@ -1,0 +1,52 @@
+<div data-controller="lightbox">
+  <a href="<%= asset_path('1.png') %>">
+    <img src="<%= asset_path('1.png') %>" alt="" />
+  </a>
+  <a href="<%= asset_path('2.png') %>">
+    <img src="<%= asset_path('2.png') %>" alt="" />
+  </a>
+  <a href="<%= asset_path('3.png') %>">
+    <img src="<%= asset_path('3.png') %>" alt="" />
+  </a>
+  <a href="<%= asset_path('chevron-down.svg') %>">
+    <img src="<%= asset_path('chevron-down.svg') %>" alt="" />
+  </a>
+
+  <a href="<%= asset_path('chevron-left.svg') %>">
+    <img src="<%= asset_path('chevron-left.svg') %>" alt="" />
+  </a>
+  <a href="<%= asset_path('chevron-right.svg') %>">
+    <img src="<%= asset_path('chevron-right.svg') %>" alt="" />
+  </a>
+</div>
+<%= turbo_frame_tag "posts" do %>
+  <div id="posts">
+    <% if @posts.any? %>
+      <div class="grid grid-cols-1">
+        <% @posts.each do |post| %>
+          <div id="<%= dom_id post %>">
+            <div data-controller="carousel" class="swiper">
+              <div class="swiper-wrapper">
+                <% post.assets.each do |asset| %>
+                  <% if asset.attachment.attached? %>
+                    <%= image_tag asset.square, draggable: false, class: "swiper-slide" %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+            <div class="flex flex-row gap-2 items-center">
+              <div>Like</div>
+              <div>Comment</div>
+              <div>Share</div>
+            </div>
+            <div>
+              Bookmark
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div></div>
+    <% end %>
+  </div>
+<% end %>

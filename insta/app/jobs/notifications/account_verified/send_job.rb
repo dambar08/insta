@@ -1,0 +1,7 @@
+class Notifications::AccountVerified::SendJob < ApplicationJob
+  queue_as :default
+
+  def perform(*args)
+    # Do something later
+  end
+end

@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe "issues/index", type: :view do
-  before(:each) do
+  before do
     assign(:issues, [
       Issue.create!(
-        description: "MyText"
+        description: "MyText",
       ),
       Issue.create!(
-        description: "MyText"
-      )
+        description: "MyText",
+      ),
     ])
   end
 

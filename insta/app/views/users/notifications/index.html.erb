@@ -1,8 +1,8 @@
-<%= content_for :with_layout do %>
+<%#= content_for :with_layout do %>
   <%= render "layout" do %>
     <%= turbo_stream_from :notifications %>
     <div id="notifications">
-      <% if @notifications.size.positive? %>
+      <% if @notifications.any? %>
         <% @notifications.each do |notification| %>
           <%= render notification %>
         <% end %>
@@ -11,4 +11,4 @@
       <% end %>
     </div>
   <% end %>
-<% end %>
+<%# end %>

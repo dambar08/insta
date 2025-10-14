@@ -13,6 +13,9 @@ application.register("clipboard", ClipboardController)
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
+// import LightboxController from "./lightbox_controller"
+// application.register("lightbox", LightboxController)
+
 import NotificationController from "./notification_controller"
 application.register("notification", NotificationController)
 

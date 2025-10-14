@@ -4,6 +4,8 @@
     { "path": "./tsconfig.browser.json" }
   ],
   "compilerOptions": {
+    // "module": "ESNext",
+    // "moduleResolution": "bundler",
     "outDir": "./app/assets/builds"
   }
 }

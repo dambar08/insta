@@ -108,6 +108,11 @@ GEM
       activesupport (>= 6.1, < 8)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
+    ahoy_email (2.5.0)
+      actionmailer (>= 7.1)
+      addressable (>= 2.3.2)
+      nokogiri
+      safely_block (>= 0.4)
     ahoy_matey (4.2.1)
       activesupport (>= 5.2)
       device_detector
@@ -177,6 +182,9 @@ GEM
     coderay (1.1.3)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.4)
+    counter_culture (3.11.2)
+      activerecord (>= 4.2)
+      activesupport (>= 4.2)
     crass (1.0.6)
     cssbundling-rails (1.4.1)
       railties (>= 6.0.0)
@@ -237,6 +245,7 @@ GEM
     fastimage (2.4.0)
     ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-arm64-darwin)
+    fiber-storage (1.0.1)
     field_test (0.7.0)
       activerecord (>= 7)
       browser (>= 2)
@@ -249,6 +258,12 @@ GEM
       activerecord (>= 4.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    graphiql-rails (1.10.5)
+      railties
+    graphql (2.5.14)
+      base64
+      fiber-storage
+      logger
     guard (2.19.0)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -357,7 +372,11 @@ GEM
     notiffany (0.1.3)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oj (3.16.11)
+      bigdecimal (>= 3.0)
+      ostruct (>= 0.2)
     orm_adapter (0.5.0)
+    ostruct (0.6.3)
     pagy (9.2.2)
     paper_trail (15.2.0)
       activerecord (>= 6.1)
@@ -527,6 +546,8 @@ GEM
       rubocop (~> 1.41)
     rubocop-factory_bot (2.26.1)
       rubocop (~> 1.61)
+    rubocop-graphql (1.5.4)
+      rubocop (>= 1.50, < 2)
     rubocop-performance (1.23.0)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
@@ -587,6 +608,13 @@ GEM
     sorbet-runtime (0.5.11647)
     spring (4.2.1)
     stackprof (0.2.27)
+    state_machines (0.100.2)
+    state_machines-activemodel (0.100.0)
+      activemodel (>= 7.2)
+      state_machines (>= 0.100.0)
+    state_machines-activerecord (0.100.0)
+      activerecord (>= 7.2)
+      state_machines-activemodel (>= 0.100.0)
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
     stringio (3.1.7)
@@ -648,6 +676,8 @@ DEPENDENCIES
   active_storage_validations (~> 3.0)
   acts_as_follower!
   acts_as_paranoid (~> 0.10.2)
+  addressable (~> 2.8)
+  ahoy_email (~> 2.5)
   ahoy_matey (~> 4.2)
   annotate (~> 3.2)
   bcrypt (~> 3.1.7)
@@ -663,6 +693,7 @@ DEPENDENCIES
   byebug (~> 11.1)
   capybara
   cloudinary (~> 1.27)
+  counter_culture (~> 3.11)
   cssbundling-rails
   database_cleaner-active_record (~> 2.2)
   debug
@@ -679,6 +710,8 @@ DEPENDENCIES
   field_test (~> 0.7.0)
   font-awesome-sass (~> 6.4)
   friendly_id (~> 5.5)
+  graphiql-rails
+  graphql (~> 2.5)
   guard (~> 2.18)
   guard-rspec (~> 4.7)
   hotwire-livereload (~> 2.0)
@@ -690,6 +723,7 @@ DEPENDENCIES
   letter_opener_web (~> 3.0)
   listen (~> 3.9)
   memory_profiler (~> 1.0)
+  oj (~> 3.16)
   pagy (~> 9.2)
   paper_trail (~> 15.0)
   parallel_tests (~> 4.2)
@@ -714,6 +748,7 @@ DEPENDENCIES
   rswag-ui (~> 2.10)
   rubocop (~> 1.68)
   rubocop-factory_bot (~> 2.23)
+  rubocop-graphql (~> 1.5)
   rubocop-performance (~> 1.19)
   rubocop-rails (~> 2.21)
   rubocop-rake (~> 0.6.0)
@@ -729,6 +764,7 @@ DEPENDENCIES
   simplecov-lcov
   spring
   stackprof (~> 0.2.25)
+  state_machines-activerecord (~> 0.100.0)
   stimulus-rails
   test-prof (~> 1.2)
   timecop (~> 0.9.8)

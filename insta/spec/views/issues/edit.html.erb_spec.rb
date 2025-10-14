@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe "issues/edit", type: :view do
-  let(:issue) {
+  let(:issue) do
     Issue.create!(
-      description: "MyText"
+      description: "MyText",
     )
-  }
+  end
 
-  before(:each) do
+  before do
     assign(:issue, issue)
   end
 
@@ -15,7 +15,6 @@ RSpec.describe "issues/edit", type: :view do
     render
 
     assert_select "form[action=?][method=?]", issue_path(issue), "post" do
-
       assert_select "textarea[name=?]", "issue[description]"
     end
   end

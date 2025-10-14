@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_04_022555) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_14_063848) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -37,18 +37,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_04_022555) do
     t.index ["var"], name: "index_account_settings_on_var", unique: true
   end
 
-  create_table "account_stats", force: :cascade do |t|
-    t.bigint "account_id", null: false
-    t.bigint "posts_count", default: 0, null: false
-    t.bigint "following_count", default: 0, null: false
-    t.bigint "followers_count", default: 0, null: false
-    t.datetime "last_post_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_account_stats_on_account_id"
-    t.index ["last_post_at", "account_id"], name: "index_account_stats_on_last_post_at_and_account_id", order: { last_post_at: :desc }, where: "(last_post_at IS NOT NULL)"
-  end
-
   create_table "accounts", force: :cascade do |t|
     t.bigint "user_id"
     t.string "username"
@@ -60,8 +48,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_04_022555) do
     t.bigint "followings_count", default: 0
     t.bigint "blocked_by_count", default: 0, null: false
     t.bigint "blocking_others_count", default: 0, null: false
+    t.boolean "verified", default: false, null: false
+    t.datetime "last_post_at"
+    t.integer "posts_count", default: 0, null: false
+    t.index ["last_post_at", "id"], name: "index_accounts_on_last_post_at_and_id", order: { last_post_at: :desc }, where: "(last_post_at IS NOT NULL)"
     t.index ["user_id"], name: "index_accounts_on_user_id"
     t.index ["username"], name: "index_accounts_on_username", unique: true
+    t.index ["verified"], name: "index_accounts_on_verified"
   end
 
   create_table "action_text_rich_texts", force: :cascade do |t|
@@ -146,6 +139,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_04_022555) do
     t.index ["properties"], name: "index_ahoy_events_on_properties", opclass: :jsonb_path_ops, using: :gin
     t.index ["user_id"], name: "index_ahoy_events_on_user_id"
     t.index ["visit_id"], name: "index_ahoy_events_on_visit_id"
+  end
+
+  create_table "ahoy_messages", force: :cascade do |t|
+    t.string "user_type"
+    t.bigint "user_id"
+    t.string "to"
+    t.string "mailer"
+    t.text "subject"
+    t.datetime "sent_at"
+    t.index ["to"], name: "index_ahoy_messages_on_to"
+    t.index ["user_type", "user_id"], name: "index_ahoy_messages_on_user"
   end
 
   create_table "ahoy_visits", force: :cascade do |t|
@@ -551,6 +555,18 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_04_022555) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  create_table "verification_requests", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.string "status", default: "pending", null: false
+    t.text "note"
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "admin_id"
+    t.index ["account_id"], name: "index_verification_requests_on_account_id"
+    t.index ["admin_id"], name: "index_verification_requests_on_admin_id"
+  end
+
   create_table "versions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "item_type", null: false
     t.string "item_id", null: false
@@ -561,7 +577,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_04_022555) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  add_foreign_key "account_stats", "accounts"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "follow_requests", "accounts", column: "target_account_id"
@@ -570,4 +585,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_04_022555) do
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
   add_foreign_key "posts", "accounts"
+  add_foreign_key "verification_requests", "accounts"
+  add_foreign_key "verification_requests", "admins"
 end

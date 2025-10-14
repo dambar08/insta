@@ -45,4 +45,8 @@ class Admin < ApplicationRecord
     :lockable,
     :timeoutable,
     :trackable
+
+  def self.bot
+    @@bot ||= Admin.find_by(email: 'super.bot@insta.com')
+  end
 end

@@ -6,7 +6,7 @@ module Admins
 
     # GET /admins/users or /admins/users.json
     def index
-      @pagy, @users = pagy(User.all)
+      @pagy, @users = pagy(User.includes([:account]).all)
     end
 
     # GET /admins/users/1 or /admins/users/1.json

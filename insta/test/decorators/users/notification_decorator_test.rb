@@ -1,4 +1,6 @@
 require 'test_helper'
 
-class Users::NotificationDecoratorTest < Draper::TestCase
+module Users
+  class NotificationDecoratorTest < Draper::TestCase
+  end
 end

@@ -12,7 +12,7 @@ namespace :users do
       User.all.sample(following_count).pluck(:id).lazy.each do |id|
         follows << { follower_id: user.id, following_id: id }
       end
-      Follow.insert_all(follows) if follows.size.positive?
+      Follow.insert_all(follows) if follows.any?
     end
   end
 end

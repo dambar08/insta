@@ -2,7 +2,7 @@
 <h1 class="text-3xl font-bold">Bookmarks</h1>
 <%= turbo_stream_from :bookmarks %>
 <div id="bookmarks">
-  <% if @bookmarks.size.positive? %>
+  <% if @bookmarks.any? %>
     <% @bookmarks.each do |bookmark| %>
       <%= render bookmark %>
     <% end %>
@@ -10,5 +10,3 @@
     <%= render partial: "empty" %>
   <% end %>
 </div>
-
-

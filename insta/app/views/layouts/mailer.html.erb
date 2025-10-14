@@ -1,13 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= I18n.locale %>">
   <head>
+    <meta charset="utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no" />
     <style>
       /* Email styles need to be inline */
     </style>
   </head>
-
-  <body>
-    <%= yield %>
-  </body>
+  <body style='font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;background:#fcfcfc;padding: 1% 0;'>
+    <table style="width:100%;max-width:700px;margin:15px auto;font-size:18px;border:solid 1px #e6e6e6;border-radius:12px;display:block;padding:2px 1%;text-decoration:none;background:white;">
+      <tr>
+        <td style="padding:2%;">
+          <%= yield %>
+        </td>
+      </tr>
+      <% if @user %>
+        <tr>
+          <td style="padding:3% 12% 2% 4%;font-size:18px;line-height:22px;color:#202121">
+            <div style="font-size:0.78em">
+              <% if @unsubscribe %>
+                <%= link_to t("mailer.unsubscribe"), email_subscriptions_unsubscribe_url(ut: @unsubscribe), style: "color:#7d7d7d" %> |
+                <a href="<%= app_url(user_settings_path(:notifications)) %>" style="color:#7d7d7d"><%= t("mailer.adjust") %></a>
+              <% else %>
+                <%= t("mailer.adjust_only_html", path: link_to(app_url(user_settings_path(:notifications)), app_url(user_settings_path(:notifications)))) %></a>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</body>
 </html>

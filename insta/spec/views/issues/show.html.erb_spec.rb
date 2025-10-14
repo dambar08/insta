@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "issues/show", type: :view do
-  before(:each) do
+  before do
     assign(:issue, Issue.create!(
-      description: "MyText"
+      description: "MyText",
     ))
   end
 

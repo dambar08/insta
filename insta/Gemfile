@@ -13,11 +13,11 @@ gem "bcrypt", "~> 3.1.7" # Use Active Model has_secure_password [https://guides.
 gem "blazer", "~> 2.6"
 gem "bootsnap", require: false # Reduces boot times through caching; required in config/boot.rb
 gem "cloudinary", "~> 1.27"
+gem "counter_culture", "~> 3.11"
 gem "cssbundling-rails" # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
 gem "devise", "~> 4.9"
 gem "devise_invitable", "~> 2.0"
 gem "doorkeeper", "~> 5.6"
-
 gem "draper", "~> 4.0"
 gem "fastimage", "~> 2.4"
 gem "field_test", "~> 0.7.0"
@@ -28,6 +28,7 @@ gem "jbuilder" # Bundle and process CSS [https://github.com/rails/cssbundling-ra
 gem "jsbundling-rails" # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
 gem "kredis" # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 gem "rails-settings-cached", "~> 2.9"
+gem "state_machines-activerecord", "~> 0.100.0"
 
 gem "pagy", "~> 9.2"
 gem "paper_trail", "~> 15.0"
@@ -40,6 +41,9 @@ gem "pundit", "~> 2.3"
 gem "rack-attack", "~> 6.7", require: false
 gem "rolify", "~> 6.0"
 # gem "rack-timeout", "~> 0.6.3"
+gem "addressable", "~> 2.8"
+gem "ahoy_email", "~> 2.5"
+gem "graphql", "~> 2.5"
 gem "rails", "~> 7.2.1" # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "ransack", github: "activerecord-hackery/ransack", branch: "main"
 gem "redis", "~> 4.8" # Use Redis adapter to run Action Cable in production
@@ -62,6 +66,7 @@ group :development, :test do
   gem "rspec-rails", "~> 6.0"
   gem "rubocop", "~> 1.68"
   gem "rubocop-factory_bot", "~> 2.23"
+  gem "rubocop-graphql", "~> 1.5"
   gem "rubocop-performance", "~> 1.19"
   gem "rubocop-rails", "~> 2.21"
   gem "rubocop-rake", "~> 0.6.0"
@@ -79,6 +84,7 @@ group :development do
   gem "bundler-audit", "~> 0.9.1", require: false
   gem "down", "~> 5.4"
   gem "erb_lint", "~> 0.5.0"
+  gem "graphiql-rails"
   gem "hotwire-livereload", "~> 2.0"
   gem "htmlbeautifier", "~> 1.4"
   gem "letter_opener_web", "~> 3.0"
@@ -116,3 +122,5 @@ end
 
 group :production do
 end
+
+gem "oj", "~> 3.16"

@@ -44,9 +44,9 @@ Parallel.map((0..1000), in_threads: 4) do |_|
   follows = []
   following_count = rand(MIN_FOLLOWING_COUNT..MAX_FOLLOWING_COUNT)
   Account.all.sample(following_count).pluck(:id).lazy.each do |id|
-    follows << { follower: Account.all.sample, followable: Account.find(id) }
+    follows << { follower_id: Account.all.sample.id, follower_type: "Account", followable_id: id, followable_type: "Account" }
   end
-  Follow.insert_all(follows) if follows.size.positive?
+  Follow.insert_all(follows) if follows.any?
 end
 
 1000.times do
@@ -58,5 +58,14 @@ end
   User.all.sample(following_count).pluck(:id).lazy.each do |id|
     follows << { follower_id: user.id, following_id: id }
   end
-  Follow.insert_all(follows) if follows.size.positive?
-end
+  Follow.insert_all(follows) if follows.any?
+
+f = Down.download("http://picsum.photos/1000/1000")
+u = User.first
+post = u.account.posts.build
+asset = post.assets.build
+asset.attachment.attach(io: f, filename: "#{SecureRandom.hex(120)}-#{f.path.split("/")[-1]}")
+asset.save!
+f.close!
+
+Follow.counter_culture_fix_counts verbose: true
