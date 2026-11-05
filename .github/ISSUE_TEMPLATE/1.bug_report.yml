@@ -55,7 +55,7 @@ body:
       placeholder: |
         About your application's environment
         Rails version             7.2.2.2
-        Ruby version              ruby 3.3.6 (2024-11-05 revision 75015d4c1f) [arm64-darwin23]
+        Ruby version              ruby 3.4.9 (2026-03-11 revision 76cca827ab) +PRISM [x86_64-linux]
         RubyGems version          3.5.22
         Rack version              3.1.16
         Middleware                ActionDispatch::HostAuthorization, Rack::Sendfile, ActionDispatch::Static, Warden::Manager, Bullet::Rack

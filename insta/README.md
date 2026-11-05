@@ -1,6 +1,6 @@
 # Rails Project
 
-[![Ruby](https://img.shields.io/badge/Ruby-3.3.6-red)](https://www.ruby-lang.org/en/)
+[![Ruby](https://img.shields.io/badge/Ruby-3.4.9-red)](https://www.ruby-lang.org/en/)
 [![Rails](https://img.shields.io/badge/Rails-7.2.1-blue)](https://rubyonrails.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14-blue)](https://www.postgresql.org/)
 [![Redis](https://img.shields.io/badge/Redis-6-orange)](https://redis.io/)
@@ -11,14 +11,14 @@
 
 ## Overview
 
-This is a **Ruby on Rails 7.2 project** using **Ruby 3.3.6**, PostgreSQL, Redis, and modern Rails tooling.
+This is a **Ruby on Rails 7.2 project** using **Ruby 3.4.9**, PostgreSQL, Redis, and modern Rails tooling.
 The project includes authentication, authorization, background jobs, file uploads, testing, analytics, and more.
 
 ---
 
 ## Ruby & Rails
 
-- **Ruby version:** 3.3.6
+- **Ruby version:** 3.4.9
 - **Rails version:** 7.2.1
 
 ---
@@ -122,7 +122,7 @@ The project includes authentication, authorization, background jobs, file upload
 1. **Install Ruby and Rails**
 
 ```bash
-rbenv install 3.3.6
+rbenv install 3.4.9
 gem install rails -v 7.2.1
 ```
 

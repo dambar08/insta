@@ -5,7 +5,7 @@
 # docker run -d -p 3000:3000 --name insta -e RAILS_MASTER_KEY=<value from config/master.key> insta
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
-ARG RUBY_VERSION=3.3.6
+ARG RUBY_VERSION=3.4.9
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
