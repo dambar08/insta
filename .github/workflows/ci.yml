@@ -9,9 +9,9 @@ jobs:
   scan_ruby:
     runs-on: ubuntu-latest
 
-    # defaults:
-    #   run:
-    #     working-directory: insta
+    defaults:
+      run:
+        working-directory: insta
 
     steps:
       - name: Checkout code
@@ -29,9 +29,9 @@ jobs:
   scan_js:
     runs-on: ubuntu-latest
 
-    # defaults:
-    #   run:
-    #     working-directory: insta
+    defaults:
+      run:
+        working-directory: insta
 
     steps:
       - name: Checkout code
@@ -54,9 +54,9 @@ jobs:
   lint:
     runs-on: ubuntu-latest
 
-    # defaults:
-    #   run:
-    #     working-directory: insta
+    defaults:
+      run:
+        working-directory: insta
 
     steps:
       - name: Checkout code
@@ -74,9 +74,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    # defaults:
-    #   run:
-    #     working-directory: insta
+    defaults:
+      run:
+        working-directory: insta
 
     services:
      redis:
