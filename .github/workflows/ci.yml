@@ -9,10 +9,6 @@ jobs:
   scan_ruby:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: insta
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -24,40 +20,28 @@ jobs:
           bundler-cache: true
 
       - name: Scan for common Rails security vulnerabilities using static analysis
-          run: bin/brakeman --no-pager
+        run: bin/brakeman --no-pager
+        working-directory: insta
 
   scan_js:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: insta
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          node-version: 22
-
-      - name: Enable Yarn
-        run: corepack enable
-      
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+          ruby-version: .ruby-version
+          bundler-cache: true
 
       - name: Scan for security vulnerabilities in JavaScript dependencies
         run: yarn audit
+        working-directory: insta
 
   lint:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: insta
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -70,13 +54,10 @@ jobs:
 
       - name: Lint code for consistent style
         run: bin/rubocop -f github
+        working-directory: insta
 
   test:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: insta
 
     services:
      redis:
@@ -84,10 +65,10 @@ jobs:
        ports:
          - 6379:6379
        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
-
     steps:
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git pkg-config google-chrome-stable
+        working-directory: insta
 
       - name: Checkout code
         uses: actions/checkout@v5
@@ -103,6 +84,8 @@ jobs:
           RAILS_ENV: test
           REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare && bundle exec rspec
+        working-directory: insta
+
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
