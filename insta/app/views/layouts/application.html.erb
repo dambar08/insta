@@ -1,3 +1,40 @@
-<%= render layout: "layouts/shared/htmldoc" do %>
-  <%= yield %>
-<% end %>
+
+<%= render "layouts/shared/htmldoc" do %>
+  <div class="flex min-h-dvh flex-col bg-bg font-sans text-fg antialiased">
+      <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-fg focus:px-4 focus:py-2 focus:text-bg">Skip to content</a>
+      <header class="sticky top-0 z-40 border-b border-line bg-bg/85 backdrop-blur" data-controller="menu">
+        <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
+          <%= link_to root_path, class: "font-display text-3xl font-extrabold tracking-tight", aria: { label: "insta home" } do %>insta<span class="text-flash">.</span><% end %>
+
+          <nav aria-label="Main" class="hidden items-center gap-8 text-sm font-semibold sm:flex">
+            <%= link_to "About", about_pages_path, class: "underline-offset-4 hover:underline aria-[current=page]:underline", aria: { current: ("page" if current_page?(about_pages_path)) } %>
+            <%= link_to "Create an account", new_user_registration_path, class: "btn btn-primary !py-2 !text-sm" %>
+          </nav>
+
+          <button type="button" class="-mr-2 grid size-11 place-items-center rounded-full hover:bg-soft sm:hidden"
+                  aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"
+                  data-menu-target="button" data-action="menu#toggle">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+        </div>
+
+        <div id="mobile-menu" hidden data-menu-target="panel" class="flex flex-col gap-4 border-t border-line px-5 py-5 text-base font-semibold sm:hidden">
+          <%= link_to "About", about_pages_path %>
+          <%= link_to "Create an account", new_user_registration_path, class: "btn btn-primary" %>
+        </div>
+      </header>
+      <main id="main" class="flex-1"><%= yield %></main>
+      <footer class="border-t border-line">
+        <div class="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-10 text-sm sm:flex-row sm:items-center sm:justify-between">
+          <p>© <%= Date.current.year %> insta. All rights reserved.</p>
+          <nav aria-label="Footer">
+            <ul class="flex flex-wrap gap-x-6 gap-y-2 font-medium">
+              <% [["About", about_pages_path], ["Privacy", privacy_pages_path], ["Accessibility", accessibility_pages_path], ["Terms of service", tos_pages_path], ["Cookies", cookies_pages_path]].each do |label, path| %>
+                <li><%= link_to label, path, class: "underline-offset-4 hover:underline aria-[current=page]:underline", aria: { current: ("page" if current_page?(path)) } %></li>
+              <% end %>
+            </ul>
+          </nav>
+        </div>
+      </footer>
+    </div>
+  <% end %>
