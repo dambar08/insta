@@ -1,6 +1,7 @@
 // Entry point for the build script in your package.json
 
 // import "lightgallery/css/lightgallery.css"
+import "./application.css"
 import "@hotwired/turbo-rails"
 import "./controllers"
 import "./stimulus_initializer"
