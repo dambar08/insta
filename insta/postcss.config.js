@@ -1,8 +1,8 @@
 /** @type {import('postcss-load-config').Config} */
 const config = {
   plugins: [
-    require('tailwind'),
     require('autoprefixer'),
+    require('@tailwindcss/postcss'),
     require('postcss-nested')
   ]
 }
