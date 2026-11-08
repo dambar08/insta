@@ -22,3 +22,17 @@ The mobile client is in `flutter/insta/`. Read its `pubspec.yaml` before changin
 ## Changes and validation
 
 Keep changes within the owning application unless a change genuinely crosses the Rails/mobile boundary. Prefer focused tests for the touched behavior, then run relevant app-level checks when the environment supports them. Treat migrations, generated files, and dependency lockfiles as part of the owning app's conventions.
+
+## Agent skills
+
+### Issue tracker
+
+Issues are tracked in this repository's GitHub Issues using `gh`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Use `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, and `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+This is a single-context repo. Read the root glossary and relevant ADRs when present. See `docs/agents/domain.md`.
