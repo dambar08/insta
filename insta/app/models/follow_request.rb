@@ -29,7 +29,7 @@ class FollowRequest < ApplicationRecord
 
   validates :account_id, uniqueness: { scope: :target_account_id }
 
-  vaidates_with FollowLimitValidator, on: :create, unless: :bypass_follow_limit
+  validates_with FollowLimitValidator, on: :create, unless: :bypass_follow_limit
   attribute :bypass_follow_limit, :boolean, default: false
 
   def validate(follow)
