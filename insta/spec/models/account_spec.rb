@@ -33,10 +33,21 @@ RSpec.describe(Account, type: :model) do
     it { is_expected.to(belong_to(:user)) }
     it { is_expected.to(have_many(:blocked_blocks)) }
     it { is_expected.to(have_many(:blocker_blocks)) }
-    it { is_expected.to(have_many(:account_pins)) }}
+    it { is_expected.to(have_many(:account_pins)) }
   end
 
   describe "scopes" do
 
+  end
+
+  describe "following accounts" do
+    let(:follower) { create(:user).account }
+    let(:followable) { create(:user).account }
+
+    it "creates one follow and reports it as following" do
+      expect { follower.follow(followable) }.to change(Follow, :count).by(1)
+
+      expect(follower).to be_following(followable)
+    end
   end
 end
