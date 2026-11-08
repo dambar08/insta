@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "simplecov-lcov"
+
 unless ENV["COVERAGE"] == "false"
   SimpleCov.coverage_dir("coverage/simplecov")
   SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
