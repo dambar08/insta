@@ -1,1 +1,21 @@
-<div></div>
+<% content_for :title, "About" %>
+<% content_for :description, "A little more about insta: a place to share everyday moments with the people who matter to you." %>
+<%= render layout: "legal", locals: { title: "For the little things worth sharing", summary: "The coffee going cold. The dog in the window. The sky on your walk home. insta is a place to share everyday moments with the people who care about them." } do %>
+  <h2>Social can feel more human</h2>
+  <p>Not every moment needs a big announcement or a polished caption. Sometimes you just want to share what made you smile, catch up with people you care about, and see a little of their day in return.</p>
+  <p>We want insta to make those small connections feel easy: open the app, share a photo or thought, and spend time with the people you chose to follow.</p>
+
+  <h2>What we believe</h2>
+  <ul>
+    <li><strong>People over numbers.</strong> Your feed should help you keep up with people, not turn every interaction into a competition.</li>
+    <li><strong>Everyday over perfect.</strong> A quick, honest post can mean more than something carefully staged.</li>
+    <li><strong>Control belongs with you.</strong> Your account and the things you share should feel like yours to manage.</li>
+  </ul>
+
+  <h2>Built around sharing</h2>
+  <p>Follow accounts you want to hear from, share photos and videos, and keep up with conversations around the posts you care about. We are building the experience to make room for genuine connection while giving people clear ways to manage their accounts.</p>
+
+  <h2>Come as you are</h2>
+  <p>Whether you are here to share a favorite place, follow a friend’s latest project, or simply see what people are up to, there is no one right way to use insta.</p>
+  <p><%= link_to "Create an account", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %> to get started.</p>
+<% end %>

@@ -1,0 +1,37 @@
+<% content_for :title, "Cookies" %>
+<% content_for :description, "Learn what browser cookies do on insta and how to manage them." %>
+<%= render layout: "legal", locals: { title: "Cookie policy", summary: "A clear guide to the small files used by insta, why they matter, and the controls available in your browser." } do %>
+  <h2>What cookies are</h2>
+  <p>Cookies are small text files that a website stores in your browser. They help a site remember information between requests. Some are needed for basic functions such as keeping your session signed in; other cookies may help understand visits or improve the service.</p>
+
+  <h2>Cookies used by insta</h2>
+  <p>The table below describes the cookies identified for insta and their stated purpose. Your browser may also store cookies for security or infrastructure services involved in delivering the site.</p>
+  <div class="not-prose my-6 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+    <table class="w-full min-w-[36rem] text-left text-sm">
+      <caption class="sr-only">Cookies used by insta</caption>
+      <thead class="bg-slate-50 dark:bg-slate-900">
+        <tr class="border-b border-slate-200 dark:border-slate-700">
+          <th scope="col" class="px-4 py-3 font-semibold">Name</th>
+          <th scope="col" class="px-4 py-3 font-semibold">Purpose</th>
+          <th scope="col" class="px-4 py-3 font-semibold">Duration</th>
+          <th scope="col" class="px-4 py-3 font-semibold">Category</th>
+        </tr>
+      </thead>
+      <tbody class="[&_td]:px-4 [&_td]:py-3 [&_tr:not(:last-child)]:border-b [&_tr]:border-slate-200 dark:[&_tr]:border-slate-700">
+        <tr><td><code>_insta_session</code></td><td>Maintains your signed-in session</td><td>Session</td><td>Essential</td></tr>
+        <tr><td><code>remember_token</code></td><td>Remembers your sign-in on this device</td><td>Up to 30 days</td><td>Essential</td></tr>
+        <tr><td><code>visit_id</code></td><td>Helps count visits without directly identifying you</td><td>Up to 12 months</td><td>Optional</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Essential and optional cookies</h2>
+  <p>Essential cookies support functions needed to use the service, including signing in. Optional cookies are used for additional measurement and are not required to browse public pages.</p>
+
+  <h2>Managing cookies</h2>
+  <p>You can block or delete cookies in your browser settings. If you block essential cookies, sign-in and other account features may not work correctly. Where optional-cookie controls are available in your account settings, you can use them to change your preferences.</p>
+  <p>Deleting a cookie removes the information stored in your browser, but the site may create it again the next time you use the related feature. The controls and names of cookie settings differ by browser.</p>
+
+  <h2>Questions</h2>
+  <p>For questions about cookies and personal information, read our <%= link_to "Privacy policy", privacy_pages_path %> or email <a href="mailto:privacy@insta.example">privacy@insta.example</a>.</p>
+<% end %>

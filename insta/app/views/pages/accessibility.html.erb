@@ -1,1 +1,26 @@
-<div></div>
+<% content_for :title, "Accessibility" %>
+<% content_for :description, "Our accessibility goals, known gaps, and how to tell us what is not working." %>
+<%= render layout: "legal", locals: { title: "Accessibility", summary: "We want insta to be usable by as many people as possible. Here is what we are working toward, what still needs attention, and how to share feedback." } do %>
+  <h2>Our commitment</h2>
+  <p>We aim to meet WCAG 2.2 level AA on the web and to follow the accessibility guidance for each platform in our apps. Accessibility is ongoing work: we review the experience, listen to people who use assistive technology, and make improvements as we find barriers.</p>
+
+  <h2>How we approach accessibility</h2>
+  <p>We work to make the core experience easier to perceive, understand, and navigate. That includes keyboard access, screen-reader support, readable contrast, and controls that remain understandable as you move through a page.</p>
+  <ul>
+    <li>Use clear page structure and descriptive labels so assistive technologies can communicate what a control does.</li>
+    <li>Keep important actions reachable by keyboard and make the current focus visible.</li>
+    <li>Consider contrast and text readability across light and dark appearances.</li>
+    <li>Respect reduced-motion preferences where motion is not essential.</li>
+    <li>Make space for descriptions of images so people can add context to the moments they share.</li>
+  </ul>
+
+  <h2>Photos, video, and other media</h2>
+  <p>Visual and moving content can leave people out when it has no text equivalent. We encourage adding useful descriptions to photos and captions or transcripts to video. Some older videos may not have captions yet, and we are working to improve this over time.</p>
+
+  <h2>Known limitations</h2>
+  <p>Accessibility can vary across pages, devices, browsers, and assistive technologies. Some older content may be missing descriptions or captions, and a feature may not behave as expected with every setup. We welcome reports that help us identify and prioritize these gaps.</p>
+
+  <h2>Contact us about an accessibility barrier</h2>
+  <p>If you have trouble using insta, tell us which page or feature you were using, what you expected to happen, and which device or assistive technology you use if you are comfortable sharing that. Please do not include your password or other sensitive account information.</p>
+  <p>Email <a href="mailto:accessibility@insta.example">accessibility@insta.example</a>. We aim to reply within 5 business days.</p>
+<% end %>
