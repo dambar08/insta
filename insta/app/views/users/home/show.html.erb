@@ -1,52 +1,19 @@
-<div data-controller="lightbox">
-  <a href="<%= asset_path('1.png') %>">
-    <img src="<%= asset_path('1.png') %>" alt="" />
-  </a>
-  <a href="<%= asset_path('2.png') %>">
-    <img src="<%= asset_path('2.png') %>" alt="" />
-  </a>
-  <a href="<%= asset_path('3.png') %>">
-    <img src="<%= asset_path('3.png') %>" alt="" />
-  </a>
-  <a href="<%= asset_path('chevron-down.svg') %>">
-    <img src="<%= asset_path('chevron-down.svg') %>" alt="" />
-  </a>
+<% content_for :title, "Home" %>
+<div class="mx-auto max-w-2xl px-4 py-8 sm:px-6">
+  <header class="mb-8 border-b border-slate-200 pb-6 dark:border-slate-800">
+    <p class="text-sm font-semibold uppercase tracking-[0.16em] text-rose-700 dark:text-rose-300">Your corner of insta</p>
+    <h1 class="mt-2 font-display text-3xl font-bold tracking-tight sm:text-4xl">Home</h1>
+    <p class="mt-2 text-slate-600 dark:text-slate-400">A little catch-up with the people sharing on insta.</p>
+  </header>
 
-  <a href="<%= asset_path('chevron-left.svg') %>">
-    <img src="<%= asset_path('chevron-left.svg') %>" alt="" />
-  </a>
-  <a href="<%= asset_path('chevron-right.svg') %>">
-    <img src="<%= asset_path('chevron-right.svg') %>" alt="" />
-  </a>
+  <% if @posts.any? %>
+    <div id="posts" class="space-y-6" aria-label="Recent posts"><%= render "feed_page" %></div>
+  <% else %>
+    <section class="rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center dark:border-slate-700 dark:bg-slate-900">
+      <span class="mx-auto grid size-14 place-items-center rounded-2xl bg-rose-100 text-2xl text-rose-700 dark:bg-rose-950 dark:text-rose-200" aria-hidden="true">◎</span>
+      <h2 class="mt-5 font-display text-2xl font-bold">Your feed starts here</h2>
+      <p class="mx-auto mt-2 max-w-md leading-7 text-slate-600 dark:text-slate-400">Explore insta and find people whose everyday moments you would like to see here.</p>
+      <%= link_to "Explore people and posts", users_explore_path, class: "mt-6 inline-flex min-h-11 items-center justify-center rounded-full bg-slate-950 px-5 py-2.5 font-semibold text-white transition hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200" %>
+    </section>
+  <% end %>
 </div>
-<%= turbo_frame_tag "posts" do %>
-  <div id="posts">
-    <% if @posts.any? %>
-      <div class="grid grid-cols-1">
-        <% @posts.each do |post| %>
-          <div id="<%= dom_id post %>">
-            <div data-controller="carousel" class="swiper">
-              <div class="swiper-wrapper">
-                <% post.assets.each do |asset| %>
-                  <% if asset.attachment.attached? %>
-                    <%= image_tag asset.square, draggable: false, class: "swiper-slide" %>
-                  <% end %>
-                <% end %>
-              </div>
-            </div>
-            <div class="flex flex-row gap-2 items-center">
-              <div>Like</div>
-              <div>Comment</div>
-              <div>Share</div>
-            </div>
-            <div>
-              Bookmark
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% else %>
-      <div></div>
-    <% end %>
-  </div>
-<% end %>
